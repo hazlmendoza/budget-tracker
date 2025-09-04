@@ -1,0 +1,111 @@
+"use client";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { signUpSchema } from "../schemas/signUpSchema";
+import Link from "next/link";
+
+type SignUpFormValues = z.infer<typeof signUpSchema>;
+
+export default function SignUp() {
+  const form = useForm<SignUpFormValues>({
+    resolver: zodResolver(signUpSchema),
+    defaultValues: {
+      fullName: "",
+      email: "",
+      password: "",
+    },
+  });
+
+  const onSubmit = (values: SignUpFormValues) => {
+    console.log(values);
+    // Handle sign-up logic here
+  };
+
+  return (
+    <div className="flex flex-row h-screen bg-background w-full">
+      <div className="w-[50%] justify-center items-center flex bg-gradient-to-tr from-blue-950 via-purple-900 to-pink-900 text-white rounded-r-3xl">
+        Lalagyan screenshot here
+      </div>
+      <section className="justify-center items-center flex flex-col mx-auto my-20 p-10 w-full max-w-1/2 bg-surface-1 ">
+        <h1 className="text-3xl font-semibold my-4">Get Started Now</h1>
+        <p className="text-md my-4">
+          Please log in to your account to continue
+        </p>
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-8 min-w-[400px]"
+          >
+            {/* Full Name Field */}
+            <FormField
+              control={form.control}
+              name="fullName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Enter your name..." {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Email Field */}
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email address</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="email@example.com"
+                      type="email"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Password Field */}
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <Input placeholder="********" type="password" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Submit Button */}
+            <Button type="submit" className="w-full">
+              Sign Up
+            </Button>
+          </form>
+        </Form>
+        <span className="my-4">
+          Have an account? <Link href="/login">Log In</Link>
+        </span>
+      </section>
+    </div>
+  );
+}
