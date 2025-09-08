@@ -1,4 +1,4 @@
-# Next.js Authentication Project
+# Next.js Budget Tracker Project
 
 This is a Next.js application that implements user authentication using Context API and TypeScript. Users can sign up, log in, and log out, with data managed globally through React Context.
 
