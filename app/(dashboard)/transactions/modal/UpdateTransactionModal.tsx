@@ -21,38 +21,42 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { addTransaction } from "@/app/api/transaction";
+import { updateTransaction } from "@/app/api/transaction";
 import { useAuth } from "@/app/context/AuthContext";
 
-interface AddTransactionModalProps {
+interface UpdateTransactionModalProps {
   isOpen: boolean;
   onClose: () => void;
+  transaction: TransactionType;
 }
 
-const AddTransactionModal: React.FC<AddTransactionModalProps> = ({
+const UpdateTransactionModal: React.FC<UpdateTransactionModalProps> = ({
   isOpen,
   onClose,
+  transaction,
 }) => {
   const { user } = useAuth();
   const form = useForm<TransactionType>({
     resolver: zodResolver(transactionSchema),
     defaultValues: {
-      description: "",
-      type: "income",
-      date: new Date(),
-      amount: 0,
-      categoryName: "",
-      userId: user?.id || "",
+      description: transaction.description,
+      type: transaction.type,
+      date: transaction.date ? new Date(transaction.date) : undefined,
+      amount: transaction.amount,
+      categoryName: transaction.categoryId?.name,
+      userId: user?.id,
     },
   });
 
   const onSubmit = async (values: TransactionType) => {
-    console.log("Form submitted", values);
     try {
       if (!user?.id) {
         throw new Error("User ID is not available.");
       }
-       const formattedValues = {
+      if (!transaction._id) {
+        throw new Error("Transaction ID is not available.");
+      }
+      const formattedValues = {
         date: values.date ? new Date(values.date) : new Date(),
         type: values.type,
         amount: Number(values.amount),
@@ -61,8 +65,7 @@ const AddTransactionModal: React.FC<AddTransactionModalProps> = ({
         categoryName: values.categoryName,
       };
 
-      await addTransaction(formattedValues);
-      console.log("Sending request with values:", formattedValues);
+      await updateTransaction(transaction._id, formattedValues);
       onClose();
     } catch (error) {
       console.log(error);
@@ -74,7 +77,7 @@ const AddTransactionModal: React.FC<AddTransactionModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
       <div className="bg-background p-6 rounded-lg shadow-lg">
-        <h1 className="text-lg font-bold mb-8">Add Transaction</h1>
+        <h1 className="text-lg font-bold mb-8">Edit Transaction</h1>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -107,8 +110,8 @@ const AddTransactionModal: React.FC<AddTransactionModalProps> = ({
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="income">Income</SelectItem>
-                        <SelectItem value="expense">Expense</SelectItem>
+                        <SelectItem value="Income">Income</SelectItem>
+                        <SelectItem value="Expense">Expense</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -184,7 +187,7 @@ const AddTransactionModal: React.FC<AddTransactionModalProps> = ({
                 Close
               </Button>
               <Button type="submit" className="min-w-28">
-                Add
+                Update
               </Button>
             </div>
           </form>
@@ -194,4 +197,4 @@ const AddTransactionModal: React.FC<AddTransactionModalProps> = ({
   );
 };
 
-export default AddTransactionModal;
+export default UpdateTransactionModal;

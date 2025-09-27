@@ -1,18 +1,22 @@
 import { z } from 'zod'
+import { categorySchema } from '../category/schema';
+
 
 export const transactionSchema = z.object({
+    _id: z.string().optional(),
     date: z.date().optional(),
-    type: z.enum(['income', 'expense']), 
+    type: z.enum(['Income', 'Expense']),
     amount: z.number().positive(),
-    description: z.string().optional(), 
+    description: z.string().optional(),
     categoryName: z.string().optional(),
-    categoryId: z.string().optional(), 
-    userId: z.string() 
+    categoryId: categorySchema.optional(),
+    userId: z.string()
 });
 
 export const transactionListSchema = z.object({
     transactions: z.array(transactionSchema)
 })
+
 
 
 export type TransactionType = z.infer<typeof transactionSchema>
