@@ -6,7 +6,7 @@ function Profile() {
         <h1>TO DO</h1>
       </div>
     </div>
-  );
+  )
 }
 
-export default Profile;
+export default Profile

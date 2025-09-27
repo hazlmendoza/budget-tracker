@@ -1,7 +1,7 @@
-"use client";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+"use client"
+import { z } from "zod"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
 import {
   Form,
   FormField,
@@ -9,33 +9,39 @@ import {
   FormLabel,
   FormControl,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { signUpSchema } from "../schemas/signUpSchema";
-import Link from "next/link";
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import { signUpSchema } from "../schemas/signUpSchema"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { useContext } from "react"
+import axios from "axios"
 
-type SignUpFormValues = z.infer<typeof signUpSchema>;
+type SignUpFormValues = z.infer<typeof signUpSchema>
 
 export default function SignUp() {
   const form = useForm<SignUpFormValues>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
-      fullName: "",
+      name: "",
       email: "",
       password: "",
     },
-  });
+  })
+  const router = useRouter()
+  const context = useContext(AppContext)
+  if (!context) {
+    throw new Error("LogIn must be used within an AppContextProvider")
+  }
 
-  const onSubmit = (values: SignUpFormValues) => {
-    console.log(values);
-    // Handle sign-up logic here
-  };
+  const onSubmit = async (values: SignUpFormValues) => {
+    
+  }
 
   return (
     <div className="flex flex-row h-screen bg-background w-full">
       <div className="w-[50%] justify-center items-center flex bg-gradient-to-tr from-blue-950 via-purple-900 to-pink-900 text-white rounded-r-3xl">
-        Lalagyan screenshot here
       </div>
       <section className="justify-center items-center flex flex-col mx-auto my-20 p-10 w-full max-w-1/2 bg-surface-1 ">
         <h1 className="text-3xl font-semibold my-4">Get Started Now</h1>
@@ -50,7 +56,7 @@ export default function SignUp() {
             {/* Full Name Field */}
             <FormField
               control={form.control}
-              name="fullName"
+              name="name"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Name</FormLabel>
@@ -107,5 +113,5 @@ export default function SignUp() {
         </span>
       </section>
     </div>
-  );
+  )
 }

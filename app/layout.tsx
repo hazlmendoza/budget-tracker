@@ -1,9 +1,6 @@
-import Sidebar from "./layout/SideBar"
-import Topbar from "./layout/TopBar"
-import './globals.css';
-
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
-import Breadcrumbs from "./../components/Breadcrumbs"
+"use client"
+import {AuthProvider} from "./context/AuthContext"
+import "./globals.css"
 
 export default function RootLayout({
   children,
@@ -11,19 +8,17 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <body>
-        <Topbar />
-
-        <SidebarProvider>
-          <Sidebar />
-          <main className="h-screen w-full">
-            <SidebarTrigger />
-            <Breadcrumbs/>
-            {children}
-          </main>
-        </SidebarProvider>
-      </body>
-    </html>
+    <AuthProvider>
+      <html lang="en">
+        <head>
+          <meta charSet="utf-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <title>Finance App</title>
+        </head>
+        <body>
+          <main className="h-screen w-full">{children}</main>
+        </body>
+      </html>
+    </AuthProvider>
   )
 }

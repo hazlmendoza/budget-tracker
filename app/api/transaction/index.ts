@@ -1,84 +1,28 @@
-export const getAllTransaction = [{
-    id: 1,
-    name: "Salary Deposit",
-    amount: 2600.0,
-    category: "Income",
-    date: "2024-01-15",
-    type: "income",
-},
-{
-    id: 2,
-    name: "Grocery Store",
-    amount: -85.32,
-    category: "Food",
-    date: "2024-01-15",
-    type: "expense",
-},
-{
-    id: 3,
-    name: "Electric Bill",
-    amount: -120.45,
-    category: "Utilities",
-    date: "2024-01-14",
-    type: "expense",
-},
-{
-    id: 4,
-    name: "Coffee Shop",
-    amount: -12.5,
-    category: "Food",
-    date: "2024-01-14",
-    type: "expense",
-},
-{
-    id: 5,
-    name: "Gas Station",
-    amount: -55.0,
-    category: "Transportation",
-    date: "2024-01-13",
-    type: "expense",
-},
-{
-    id: 6,
-    name: "Freelance Project",
-    amount: 800.0,
-    category: "Income",
-    date: "2024-01-12",
-    type: "income",
-},
-{
-    id: 7,
-    name: "Restaurant",
-    amount: -45.8,
-    category: "Food",
-    date: "2024-01-12",
-    type: "expense",
-},
-{
-    id: 8,
-    name: "Online Shopping",
-    amount: -129.99,
-    category: "Shopping",
-    date: "2024-01-11",
-    type: "expense",
-},
-{
-    id: 9,
-    name: "Today Pizza",
-    amount: -129.99,
-    category: "Shopping",
-    date: "2025-09-02",
-    type: "expense",
-},
-]
+import axios from 'axios';
+import { TransactionType } from './schema';
 
-export const getAllCategories = [
-    { name: "All" },
-    { name: "Food" },
-    { name: "Transportation" },
-    { name: "Utilities" },
-    { name: "Shopping" },
-    { name: "Income" },
-    { name: "Entertainment" },
-]
-   
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+export const getAllTransactions = async (userId: string) => {
+    const response = await axios.get(`${API_URL}/transactions/${userId}`);
+    return response.data;
+};
+
+export const getTransactionById = async (id: string) => {
+    const response = await axios.get(`${API_URL}/transactions/${id}`);
+    return response.data;
+};
+
+export const addTransaction = async (transaction: TransactionType) => {
+    const response = await axios.post(`${API_URL}/transactions`, transaction);
+    return response.data;
+};
+
+export const updateTransaction = async (id: string, transaction: TransactionType) => {
+    const response = await axios.put(`${API_URL}/transactions/${id}`, transaction);
+    return response.data;
+};
+
+export const deleteTransaction = async (id: string) => {
+    await axios.delete(`${API_URL}/transactions/${id}`);
+};
