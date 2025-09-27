@@ -22,6 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { addTransaction } from "@/app/api/transaction";
+import { useAuth } from "@/app/context/AuthContext";
 
 interface AddTransactionModalProps {
   isOpen: boolean;
@@ -32,29 +33,42 @@ const AddTransactionModal: React.FC<AddTransactionModalProps> = ({
   isOpen,
   onClose,
 }) => {
+  const { user } = useAuth();
   const form = useForm<TransactionType>({
     resolver: zodResolver(transactionSchema),
     defaultValues: {
-        description: '', // String default
-      type: 'Income', // Default type
-      date: '', // Empty string for date
-      amount: 0, // Initialize as a number
-      categoryName: '', // Optional string
+      description: "",
+      type: "income",
+      date: new Date(),
+      amount: 0,
+      categoryName: "",
+      userId: user?.id || "",
     },
   });
 
   const onSubmit = async (values: TransactionType) => {
+    console.log("Form submitted", values);
     try {
-      const formattedValues = {
-        ...values,
-        amount: Number(values.amount), // Convert amount to a number
+      if (!user?.id) {
+        throw new Error("User ID is not available.");
+      }
+       const formattedValues = {
+        date: values.date ? new Date(values.date) : new Date(),
+        type: values.type,
+        amount: Number(values.amount),
+        description: values.description,
+        userId: user.id,
+        categoryName: values.categoryName,
       };
+
       await addTransaction(formattedValues);
+      console.log("Sending request with values:", formattedValues);
       onClose();
     } catch (error) {
       console.log(error);
     }
   };
+
   if (!isOpen) return null;
 
   return (
@@ -93,8 +107,8 @@ const AddTransactionModal: React.FC<AddTransactionModalProps> = ({
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="Income">Income</SelectItem>
-                        <SelectItem value="Expense">Expense</SelectItem>
+                        <SelectItem value="income">Income</SelectItem>
+                        <SelectItem value="expense">Expense</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -111,7 +125,20 @@ const AddTransactionModal: React.FC<AddTransactionModalProps> = ({
                       <Input
                         placeholder="Date"
                         type="date"
-                        {...field}
+                        value={
+                          field.value
+                            ? typeof field.value === "string"
+                              ? field.value
+                              : field.value.toISOString().split("T")[0]
+                            : ""
+                        }
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          field.onChange(value ? new Date(value) : undefined);
+                        }}
+                        onBlur={field.onBlur}
+                        name={field.name}
+                        ref={field.ref}
                         className="justify-center"
                       />
                     </FormControl>
@@ -127,7 +154,12 @@ const AddTransactionModal: React.FC<AddTransactionModalProps> = ({
                 <FormItem>
                   <FormLabel>Amount*</FormLabel>
                   <FormControl>
-                    <Input placeholder="Amount" type="number" {...field} />
+                    <Input
+                      placeholder="Amount"
+                      type="number"
+                      {...field}
+                      onChange={(e) => field.onChange(Number(e.target.value))}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

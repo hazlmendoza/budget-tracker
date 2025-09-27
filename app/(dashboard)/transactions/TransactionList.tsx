@@ -5,8 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowDownLeft, ArrowUpRight, Edit, Trash2 } from "lucide-react";
 
 interface Transaction {
-  id: string; // ID as a string
-  type: "Income" | "Expense"; // Type of transaction
+  type: "income" | "expense"; // Type of transaction
   amount: number; // Amount of the transaction
   date: string; // Date as a string in ISO format
   description?: string; // Optional description
@@ -20,6 +19,7 @@ interface TransactionListProps {
 }
 
 const TransactionList = ({ transactions }: TransactionListProps) => {
+  
   return (
     <Card className="card-elevated">
       <CardHeader>
@@ -29,9 +29,9 @@ const TransactionList = ({ transactions }: TransactionListProps) => {
       </CardHeader>
       <CardContent>
         <div className="space-y-3">
-          {transactions.map((transaction) => (
+          {transactions.map((transaction, index) => (
             <div
-              key={transaction.id}
+            key={index}
               className="flex items-center justify-between p-4 rounded-lg bg-surface-2 hover:bg-surface-3 transition-colors duration-200"
             >
               <div className="flex items-center space-x-4">

@@ -6,8 +6,6 @@ import { Filter, Search } from "lucide-react"
 
 
 const TransactionFilter = () => {
-
-
   return (
     <Card className="card-elevated">
       <CardHeader>

@@ -3,15 +3,18 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import TransactionList from "./TransactionList";
 import { useAtom } from "jotai";
-import { transactionsAtom } from "../../store/atom";
+import { transactionsListAtom } from "../../store/atom";
 import { useEffect, useState } from "react";
 import { getAllTransactions } from "../../api/transaction";
 import AddTransactionModal from "./AddTransactionModal";
 import { useAuth } from "@/app/context/AuthContext";
+import TransactionFilter from "./TransactionFilter";
+
+
 
 export default function Transactions() {
   const { user } = useAuth();
-  const [transactions, setTransactions] = useAtom(transactionsAtom);
+  const [transactions, setTransactions] = useAtom(transactionsListAtom);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Fetch transactions on component mount
@@ -31,7 +34,7 @@ export default function Transactions() {
     };
 
     fetchData();
-  }, [setTransactions, user]);
+  }, [transactions, setTransactions, user]);
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -69,11 +72,16 @@ export default function Transactions() {
 
       {/* Main content */}
       <div className="p-6 space-y-6">
-        {/* Filters */}
+        {/* TO DO: Filters */}
         {/* <TransactionFilter /> */}
 
         {/* Transactions list */}
-        <TransactionList transactions={transactions} />
+        <TransactionList transactions={
+          Array.isArray(transactions) && transactions.length > 0 && transactions[0]?.transactions
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            ? transactions.flatMap((t: any) => t.transactions)
+            : transactions
+        } />
       </div>
     </div>
   );
