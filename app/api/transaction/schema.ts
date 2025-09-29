@@ -6,7 +6,7 @@ export const transactionSchema = z.object({
     _id: z.string().optional(),
     date: z.date().optional(),
     type: z.enum(['Income', 'Expense']),
-    amount: z.number().positive(),
+    amount: z.number(),
     description: z.string().optional(),
     categoryName: z.string().optional(),
     categoryId: categorySchema.optional(),
@@ -16,8 +16,6 @@ export const transactionSchema = z.object({
 export const transactionListSchema = z.object({
     transactions: z.array(transactionSchema)
 })
-
-
 
 export type TransactionType = z.infer<typeof transactionSchema>
 export type TransactionListType = z.infer<typeof transactionListSchema>

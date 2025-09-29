@@ -5,13 +5,13 @@ import {
 import { deleteTransaction } from "@/app/api/transaction";
 import { useAuth } from "@/app/context/AuthContext";
 
-interface UpdateTransactionModalProps {
+interface DeleteTransactionModalProps {
   isOpen: boolean;
   onClose: () => void;
   transaction: TransactionType;
 }
 
-const UpdateTransactionModal: React.FC<UpdateTransactionModalProps> = ({
+const DeleteTransactionModal: React.FC<DeleteTransactionModalProps> = ({
   isOpen,
   onClose,
   transaction,
@@ -40,7 +40,9 @@ const UpdateTransactionModal: React.FC<UpdateTransactionModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
       <div className="bg-background p-6 rounded-lg shadow-lg">
         <h1 className="text-lg font-bold mb-8">Confirm Deletion</h1>
-
+        <p className="mb-4 text-gray-700">
+          Are you sure you want to delete this transaction? This action cannot be undone.
+        </p>
         <div className="mt-8 flex justify-end">
           <Button onClick={onClose} className="mr-4 min-w-28">
             Close
@@ -54,4 +56,4 @@ const UpdateTransactionModal: React.FC<UpdateTransactionModalProps> = ({
   );
 };
 
-export default UpdateTransactionModal;
+export default DeleteTransactionModal;

@@ -5,7 +5,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowDownLeft, ArrowUpRight, Edit, Trash2 } from "lucide-react";
 import { useState } from "react";
 import UpdateTransactionModal from "./modal/UpdateTransactionModal";
-import { TransactionListType, TransactionType } from "@/app/api/transaction/schema";
+import {
+  TransactionListType,
+  TransactionType,
+} from "@/app/api/transaction/schema";
 import DeleteTransactionModal from "./modal/DeleteTransactionModal";
 
 const TransactionList = ({ transactions }: TransactionListType) => {
@@ -13,7 +16,7 @@ const TransactionList = ({ transactions }: TransactionListType) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [currentTransaction, setCurrentTransaction] = useState<TransactionType | null>(null);
 
-   const handleOpenUpdateModal = (transaction: TransactionType) => {
+  const handleOpenUpdateModal = (transaction: TransactionType) => {
     setCurrentTransaction(transaction);
     setIsUpdateModalOpen(true);
   };
@@ -100,8 +103,6 @@ const TransactionList = ({ transactions }: TransactionListType) => {
                     <Edit className="h-4 w-4" />
                   </Button>
 
-                
-
                   <Button
                     variant="ghost"
                     size="sm"
@@ -110,8 +111,6 @@ const TransactionList = ({ transactions }: TransactionListType) => {
                   >
                     <Trash2 className="h-4 w-4" />
                   </Button>
-
-                 
                 </div>
               </div>
             </div>
@@ -125,7 +124,6 @@ const TransactionList = ({ transactions }: TransactionListType) => {
         )}
       </CardContent>
 
-      
       {/* Update Transaction Modal */}
       {isUpdateModalOpen && (
         <UpdateTransactionModal
