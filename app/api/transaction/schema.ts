@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { categorySchema } from '../category/schema';
+import { atom } from 'jotai';
 
 
 export const transactionSchema = z.object({
@@ -19,3 +20,4 @@ export const transactionListSchema = z.object({
 
 export type TransactionType = z.infer<typeof transactionSchema>
 export type TransactionListType = z.infer<typeof transactionListSchema>
+export const transactionsListAtom = atom<{ transactions: TransactionType[] }>({ transactions: [] });

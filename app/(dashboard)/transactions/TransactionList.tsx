@@ -10,11 +10,13 @@ import {
   TransactionType,
 } from "@/app/api/transaction/schema";
 import DeleteTransactionModal from "./modal/DeleteTransactionModal";
+import { format } from "date-fns";
 
 const TransactionList = ({ transactions }: TransactionListType) => {
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [currentTransaction, setCurrentTransaction] = useState<TransactionType | null>(null);
+  const [currentTransaction, setCurrentTransaction] =
+    useState<TransactionType | null>(null);
 
   const handleOpenUpdateModal = (transaction: TransactionType) => {
     setCurrentTransaction(transaction);
@@ -51,8 +53,14 @@ const TransactionList = ({ transactions }: TransactionListType) => {
               className="flex items-center justify-between p-4 rounded-lg bg-surface-2 hover:bg-surface-3 transition-colors duration-200"
             >
               <div className="flex items-center space-x-4">
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-muted">
-                  {transaction.amount > 0 ? (
+                <div
+                  className={`flex h-12 w-12 items-center justify-center rounded-lg bg-muted ${
+                    transaction.categoryId?.type === "Income"
+                      ? "bg-success-light"
+                      : "bg-muted"
+                  }`}
+                >
+                  {transaction.categoryId?.type === "Income" ? (
                     <ArrowUpRight className="h-5 w-5 text-success" />
                   ) : (
                     <ArrowDownLeft className="h-5 w-5 text-muted-foreground" />
@@ -68,12 +76,8 @@ const TransactionList = ({ transactions }: TransactionListType) => {
                     </Badge>
                     <span className="text-sm text-muted-foreground">
                       {transaction.date
-                        ? typeof transaction.date === "string"
-                          ? new Date(transaction.date).toLocaleDateString()
-                          : transaction.date instanceof Date
-                          ? transaction.date.toLocaleDateString()
-                          : ""
-                        : ""}
+                        ? format(transaction.date, "yyyy-MM-dd")
+                        : "No date available"}
                     </span>
                   </div>
                 </div>
@@ -83,12 +87,12 @@ const TransactionList = ({ transactions }: TransactionListType) => {
                 <div className="text-right">
                   <p
                     className={`text-lg font-bold ${
-                      transaction.amount > 0
+                      transaction.categoryId?.type === "Income"
                         ? "text-success"
                         : "text-foreground"
                     }`}
                   >
-                    {transaction.amount > 0 ? "+" : "-"}$
+                    {transaction.categoryId?.type === "Income" ? "+" : "-"}$
                     {Math.abs(transaction.amount).toFixed(2)}
                   </p>
                 </div>

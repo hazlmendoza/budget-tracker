@@ -1,70 +1,66 @@
-import { updateBudget } from "@/app/api/budget";
-import { BudgetSchema, BudgetType } from "@/app/api/budget/schema";
-import { useAuth } from "@/app/context/AuthContext";
-import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
-import { useForm } from "react-hook-form";
+import { updateGoal } from "@/app/api/goals"
+import { GoalSchema, GoalType } from "@/app/api/goals/schema"
+import { useAuth } from "@/app/context/AuthContext"
+import { Button } from "@/components/ui/button"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { zodResolver } from "@hookform/resolvers/zod"
+import React from "react"
+import { useForm } from "react-hook-form"
 
-interface UpdateBudgetModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  budget: BudgetType;
+interface UpdateGoalModalProps {
+  isOpen: boolean
+  onClose: () => void
+  goal: GoalType
 }
 
-const UpdateBudgetModal: React.FC<UpdateBudgetModalProps> = ({ isOpen, onClose, budget }) => {
-  const { user } = useAuth();
-
-  const form = useForm<BudgetType>({
-    resolver: zodResolver(BudgetSchema),
+const UpdateGoalModal: React.FC<UpdateGoalModalProps> = ({
+  isOpen,
+  onClose,
+  goal,
+}) => {
+  const { user } = useAuth()
+  const form = useForm<GoalType>({
+    resolver: zodResolver(GoalSchema),
     defaultValues: {
-      categoryName: budget.categoryName,
-      startDate: budget.startDate ? new Date(budget.startDate) : undefined,
-      endDate: budget.endDate ? new Date(budget.endDate) : undefined,
-      amount: budget.amount,
-      spent: budget.spent,
       userId: user?.id,
+      title: goal.title,
+      startDate: goal.startDate ? new Date(goal.startDate) : undefined,
+      dueDate: goal.dueDate ? new Date(goal.dueDate) : undefined,
+      targetAmount: goal.targetAmount,
+      currentAmount: goal.currentAmount,
     },
-  });
+  })
 
-  const onSubmit = async (values: BudgetType) => {
+  const onSubmit = async (values: GoalType) => {
     try {
       if (!user?.id) {
-        throw new Error("User ID is not available.");
+        throw new Error("User ID is not available.")
       }
-      if (!budget._id) {
-        throw new Error("Budget ID is not available.");
+      if (!goal._id) {
+        throw new Error("Goal ID is not available.")
       }
+
       const formattedValues = {
-        categoryName: values.categoryName,
-        categoryType: "expense",
-        amount: Number(values.amount),
-        spent: values.spent,
-        endDate: values.endDate ? new Date(values.endDate) : new Date(),
+        title: values.title,
+        targetAmount: Number(values.targetAmount),
+        currentAmount: Number(values.currentAmount),
+        dueDate: values.dueDate ? new Date(values.dueDate) : new Date(),
         startDate: values.startDate ? new Date(values.startDate) : new Date(),
         userId: user.id,
-      };
-      await updateBudget(budget._id, formattedValues);
-      onClose();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  if (!isOpen) return null;
+      }
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+      await updateGoal(goal._id, formattedValues)
+      onClose()
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  if (!isOpen) return null
+  return <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
       <div className="bg-background p-6 rounded-lg shadow-lg">
-        <h1 className="text-lg font-bold mb-8">Edit Budget</h1>
+        <h1 className="text-lg font-bold mb-8">Add Goal</h1>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -72,10 +68,10 @@ const UpdateBudgetModal: React.FC<UpdateBudgetModalProps> = ({ isOpen, onClose, 
           >
             <FormField
               control={form.control}
-              name="categoryName"
+              name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Category*</FormLabel>
+                  <FormLabel>Title*</FormLabel>
                   <FormControl>
                     <Input placeholder="" {...field} />
                   </FormControl>
@@ -97,15 +93,16 @@ const UpdateBudgetModal: React.FC<UpdateBudgetModalProps> = ({ isOpen, onClose, 
                         type="date"
                         value={
                           field.value
-                            ? typeof field.value === "string"
-                              ? field.value
-                              : field.value.toISOString().split("T")[0]
+                            ? field.value.toISOString().split("T")[0]
                             : ""
                         }
-                        onChange={(e) => {
-                          const value = e.target.value;
-                          field.onChange(value ? new Date(value) : undefined);
-                        }}
+                        onChange={(e) =>
+                          field.onChange(
+                            e.target.value
+                              ? new Date(e.target.value)
+                              : undefined
+                          )
+                        }
                         onBlur={field.onBlur}
                         name={field.name}
                         ref={field.ref}
@@ -119,7 +116,7 @@ const UpdateBudgetModal: React.FC<UpdateBudgetModalProps> = ({ isOpen, onClose, 
 
               <FormField
                 control={form.control}
-                name="endDate"
+                name="dueDate"
                 render={({ field }) => (
                   <FormItem className="w-[50%]">
                     <FormLabel>End Date*</FormLabel>
@@ -129,15 +126,16 @@ const UpdateBudgetModal: React.FC<UpdateBudgetModalProps> = ({ isOpen, onClose, 
                         type="date"
                         value={
                           field.value
-                            ? typeof field.value === "string"
-                              ? field.value
-                              : field.value.toISOString().split("T")[0]
+                            ? field.value.toISOString().split("T")[0]
                             : ""
                         }
-                        onChange={(e) => {
-                          const value = e.target.value;
-                          field.onChange(value ? new Date(value) : undefined);
-                        }}
+                        onChange={(e) =>
+                          field.onChange(
+                            e.target.value
+                              ? new Date(e.target.value)
+                              : undefined
+                          )
+                        }
                         onBlur={field.onBlur}
                         name={field.name}
                         ref={field.ref}
@@ -149,12 +147,13 @@ const UpdateBudgetModal: React.FC<UpdateBudgetModalProps> = ({ isOpen, onClose, 
                 )}
               />
             </div>
+
             <FormField
               control={form.control}
-              name="amount"
+              name="targetAmount"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Budget Amount*</FormLabel>
+                  <FormLabel>Target Amount*</FormLabel>
                   <FormControl>
                     <Input
                       placeholder="Amount"
@@ -167,12 +166,13 @@ const UpdateBudgetModal: React.FC<UpdateBudgetModalProps> = ({ isOpen, onClose, 
                 </FormItem>
               )}
             />
-            <FormField
+
+              <FormField
               control={form.control}
-              name="spent"
+              name="currentAmount"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Budget Spent*</FormLabel>
+                  <FormLabel>Current Amount*</FormLabel>
                   <FormControl>
                     <Input
                       placeholder="Amount"
@@ -191,14 +191,13 @@ const UpdateBudgetModal: React.FC<UpdateBudgetModalProps> = ({ isOpen, onClose, 
                 Close
               </Button>
               <Button type="submit" className="min-w-28">
-                Update
+                Add
               </Button>
             </div>
           </form>
         </Form>
       </div>
     </div>
-  );
-};
+}
 
-export default UpdateBudgetModal;
+export default UpdateGoalModal

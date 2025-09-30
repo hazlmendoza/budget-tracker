@@ -1,78 +1,76 @@
-import { BudgetListType } from "@/app/api/budget/schema";
+import { GoalListType } from "@/app/api/goals/schema";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { TrendingUp } from "lucide-react";
+import { Target, TrendingUp, Trophy } from "lucide-react";
 
-const BudgetOverview = ({ budgets }: BudgetListType) => {
-  const totalBudget = budgets.reduce((acc, budget) => acc + budget.amount, 0);
-  const totalSpent = budgets.reduce(
-    (acc, budget) => acc + (budget.spent || 0),
+const GoalsOverview = ({ goals }: GoalListType) => {
+  const totalTargetAmount = goals.reduce(
+    (acc, goal) => acc + goal.targetAmount,
     0
   );
-
-  // Avoid division by zero
-  const budgetedPercent =
-    totalBudget > 0 ? ((totalSpent / totalBudget) * 100).toFixed(1) : 0;
-  const remainingBudget = totalBudget - totalSpent;
+  const totalCurrentAmount = goals.reduce(
+    (acc, goal) => acc + (goal.currentAmount || 0),
+    0
+  );
+  const completionRate =
+    totalTargetAmount > 0
+      ? ((totalCurrentAmount / totalTargetAmount) * 100).toFixed(1)
+      : 0;
+  const completedGoals = goals.filter(
+    (goal) => (goal.currentAmount || 0) >= goal.targetAmount
+  ).length;
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       <Card className="card-elevated">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
           <CardTitle className="text-sm font-medium text-muted-foreground">
-            Total Budgeted
+            Total Goal Amount
           </CardTitle>
-          <TrendingUp className="h-4 w-4 text-muted-foreground" />
+          <Target className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
           <div className="text-3xl font-bold text-foreground">
-            ${totalBudget}
-          </div>
-        </CardContent>
-      </Card>
-
-      <Card className="card-elevated">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-          <CardTitle className="text-sm font-medium text-muted-foreground">
-            Total Spent
-          </CardTitle>
-          <TrendingUp className="h-4 w-4 text-muted-foreground" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-3xl font-bold text-foreground">
-            ${totalSpent}
-          </div>
-          <p
-            className={`text-xs mt-2 ${
-              totalSpent > totalBudget ? "text-destructive" : "text-success"
-            }`}
-          >
-            {budgetedPercent}% of budget
-          </p>
-        </CardContent>
-      </Card>
-
-      <Card className="card-elevated">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-          <CardTitle className="text-sm font-medium text-muted-foreground">
-            Remaining
-          </CardTitle>
-          <TrendingUp className="h-4 w-4 text-muted-foreground" />
-        </CardHeader>
-        <CardContent>
-          <div
-            className={`text-3xl font-bold ${
-              remainingBudget >= 0 ? "text-success" : "text-destructive"
-            }`}
-          >
-            ${Math.abs(remainingBudget).toFixed(2)}
+            ${totalTargetAmount}
           </div>
           <p className="text-xs text-muted-foreground mt-2">
-            {remainingBudget >= 0 ? "Available" : "Over budget"}
+            {goals.length} active goals
           </p>
+        </CardContent>
+      </Card>
+
+      <Card className="card-elevated">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+          <CardTitle className="text-sm font-medium text-muted-foreground">
+            Total Saved
+          </CardTitle>
+          <TrendingUp className="h-4 w-4 text-muted-foreground" />
+        </CardHeader>
+        <CardContent>
+          <div className="text-3xl font-bold text-foreground">
+            ${totalCurrentAmount.toLocaleString()}
+          </div>
+          <p className="text-xs text-success mt-2">
+            {completionRate}% complete
+          </p>
+        </CardContent>
+      </Card>
+
+      <Card className="card-elevated">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+          <CardTitle className="text-sm font-medium text-muted-foreground">
+            Completed Goals
+          </CardTitle>
+          <Trophy className="h-4 w-4 text-muted-foreground" />
+        </CardHeader>
+        <CardContent>
+          <div className="text-3xl font-bold text-foreground">
+            {completedGoals}
+          </div>
+          {/* <p className="text-xs text-muted-foreground mt-2">This year</p> */}
         </CardContent>
       </Card>
     </div>
   );
 };
 
-export default BudgetOverview;
+export default GoalsOverview;

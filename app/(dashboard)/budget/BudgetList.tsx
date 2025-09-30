@@ -1,7 +1,13 @@
 import { BudgetListType, BudgetType } from "@/app/api/budget/schema";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Edit, Trash2 } from "lucide-react";
+import {
+  AlertTriangle,
+  Calendar,
+  CircleCheckBig,
+  Edit,
+  Trash2,
+} from "lucide-react";
 import React, { useState } from "react";
 import { format } from "date-fns";
 import { Progress } from "@/components/ui/progress";
@@ -14,7 +20,7 @@ const BudgetList = ({ budgets }: BudgetListType) => {
   const [currentBudget, setCurrentBudget] = useState<BudgetType | null>(null);
 
   const handleOpenUpdateModal = (budget: BudgetType) => {
-    console.log(budget)
+    console.log(budget);
     setCurrentBudget(budget);
     setIsUpdateModalOpen(true);
   };
@@ -53,17 +59,42 @@ const BudgetList = ({ budgets }: BudgetListType) => {
             return (
               <div key={budget._id} className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <h3 className="font-medium text-foreground">
-                      {budget.categoryName}
-                    </h3>
+                  <div className="space-y-1">
+                    <div className="flex items-center">
+                      <span className="mr-2">
+                        {isOverBudget ? (
+                          <AlertTriangle className="h-5 w-5 text-destructive" />
+                        ) : (
+                          <CircleCheckBig className="h-5 w-5 text-success" />
+                        )}
+                      </span>
+                      <h3 className="font-medium text-xl text-foreground">
+                        {budget.categoryName}
+                      </h3>
+                    </div>
+                    <div className="flex items-center space-x-4 text-sm text-muted-foreground">
+                      <div className="flex items-center">
+                        <Calendar className="mr-1 h-3 w-3" />
+                        {format(budget.endDate, "yyyy-MM-dd")}
+                      </div>
+                    </div>
                   </div>
                   <div>
-                    <Button variant="ghost" size="sm" className="h-8 w-8 p-0" onClick={() => handleOpenUpdateModal(budget)}>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-8 w-8 p-0"
+                      onClick={() => handleOpenUpdateModal(budget)}
+                    >
                       <Edit className="h-4 w-4" />
                     </Button>
-                    <Button variant="ghost" size="sm" className="h-8 w-8 p-0" onClick={() => handleOpenDeleteModal(budget)}>
-                      <Trash2 className="h-4 w-4" />
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-8 w-8 p-0"
+                      onClick={() => handleOpenDeleteModal(budget)}
+                    >
+                      <Trash2 className="h-4 w-4 text-destructive" />
                     </Button>
                   </div>
                 </div>
@@ -83,9 +114,6 @@ const BudgetList = ({ budgets }: BudgetListType) => {
                       {((spent / budgeted) * 100).toFixed(1)}%
                     </span>
                   </div>
-
-                  {/* <div>{format(budget.startDate, "yyyy-MM-dd")}</div>
-                  <div>{format(budget.endDate, "yyyy-MM-dd")}</div> */}
 
                   <Progress value={percentage} className="h-2" />
 
@@ -107,9 +135,7 @@ const BudgetList = ({ budgets }: BudgetListType) => {
             onClose={handleCloseUpdateModal}
             budget={currentBudget}
           />
-
-        )
-       }
+        )}
 
         {/* Delete Budget Modal */}
         {isDeleteModalOpen && (

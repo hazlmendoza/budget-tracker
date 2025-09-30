@@ -65,11 +65,17 @@ export default function Budget() {
 
       {/* Main content */}
       <div className="p-6 space-y-6">
-        {/* TO DO: Budget overview */}
-        <BudgetOverview />
+        {/* Budget overview */}
+        <BudgetOverview budgets={Array.isArray(budgets) && budgets.length > 0 && budgets[0]?.budgets
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            ? budgets.flatMap((t: any) => t.budgets)
+            : budgets}/>
 
-        {/* TO DO: Alerts */}
-        <BudgetAlert />
+        {/* Alerts */}
+        <BudgetAlert budgets={Array.isArray(budgets) && budgets.length > 0 && budgets[0]?.budgets
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            ? budgets.flatMap((t: any) => t.budgets)
+            : budgets}/>
 
         {/* Budget categories */}
         <BudgetList budgets={Array.isArray(budgets) && budgets.length > 0 && budgets[0]?.budgets
