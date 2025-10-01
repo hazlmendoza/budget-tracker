@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import BudgetOverview from "./BudgetOverview";
@@ -66,22 +66,34 @@ export default function Budget() {
       {/* Main content */}
       <div className="p-6 space-y-6">
         {/* Budget overview */}
-        <BudgetOverview budgets={Array.isArray(budgets) && budgets.length > 0 && budgets[0]?.budgets
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            ? budgets.flatMap((t: any) => t.budgets)
-            : budgets}/>
+        <BudgetOverview
+          budgets={
+            Array.isArray(budgets) && budgets.length > 0 && budgets[0]?.budgets
+              ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                budgets.flatMap((t: any) => t.budgets)
+              : budgets
+          }
+        />
 
         {/* Alerts */}
-        <BudgetAlert budgets={Array.isArray(budgets) && budgets.length > 0 && budgets[0]?.budgets
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            ? budgets.flatMap((t: any) => t.budgets)
-            : budgets}/>
+        <BudgetAlert
+          budgets={
+            Array.isArray(budgets) && budgets.length > 0 && budgets[0]?.budgets
+              ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                budgets.flatMap((t: any) => t.budgets)
+              : budgets
+          }
+        />
 
         {/* Budget categories */}
-        <BudgetList budgets={Array.isArray(budgets) && budgets.length > 0 && budgets[0]?.budgets
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            ? budgets.flatMap((t: any) => t.budgets)
-            : budgets}/>
+        <BudgetList
+          budgets={
+            Array.isArray(budgets) && budgets.length > 0 && budgets[0]?.budgets
+              ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                budgets.flatMap((t: any) => t.budgets)
+              : budgets
+          }
+        />
       </div>
     </div>
   );

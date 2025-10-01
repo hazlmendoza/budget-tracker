@@ -17,7 +17,6 @@ export default function Transactions() {
   const [transactions, setTransactions] = useAtom(transactionsListAtom);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Fetch transactions on component mount
   useEffect(() => {
     const fetchData = async () => {
       if (!user) {
