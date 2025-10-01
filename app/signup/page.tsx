@@ -12,48 +12,57 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { signUpSchema } from "../schemas/signUpSchema"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
 import { useContext } from "react"
-import axios from "axios"
-
-type SignUpFormValues = z.infer<typeof signUpSchema>
+import { useRouter } from "next/navigation"
+import { AuthContext } from "../context/AuthContext"
+import { SignUpFormValues, signUpSchema } from "../schemas/signUpSchema"
+import LoadingOverlay from "../layout/LoadingOverlay"
 
 export default function SignUp() {
   const form = useForm<SignUpFormValues>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
-      name: "",
+      name: '',
       email: "",
       password: "",
     },
   })
-  const router = useRouter()
-  const context = useContext(AppContext)
-  if (!context) {
-    throw new Error("LogIn must be used within an AppContextProvider")
+
+  const authContext = useContext(AuthContext)
+   const router = useRouter()
+
+  if (!authContext) {
+    throw new Error("SignUp must be used within an AuthProvider")
   }
 
-  const onSubmit = async (values: SignUpFormValues) => {
-    
+  const { loading, signup } = authContext
+
+  const onSubmit = async (data: SignUpFormValues) => {
+    try {
+      await signup({ username: data.name, email: data.email, password: data.password })
+      router.push("/login") 
+    } catch (error) {
+      console.error("SignUp failed:", error)
+    }
   }
+
+  if (loading) return <LoadingOverlay/>
 
   return (
     <div className="flex flex-row h-screen bg-background w-full">
-      <div className="w-[50%] justify-center items-center flex bg-gradient-to-tr from-blue-950 via-purple-900 to-pink-900 text-white rounded-r-3xl">
-      </div>
+      <div className="w-[50%] justify-center items-center flex bg-gradient-to-tr from-blue-950 via-purple-900 to-pink-900 text-white rounded-r-3xl"></div>
       <section className="justify-center items-center flex flex-col mx-auto my-20 p-10 w-full max-w-1/2 bg-surface-1 ">
-        <h1 className="text-3xl font-semibold my-4">Get Started Now</h1>
-        <p className="text-md my-4">
-          Please log in to your account to continue
+        <h1 className="text-3xl font-semibold my-4">Welcome</h1>
+        <p className="text-md my-6">
+          Please create an account to continue
         </p>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
             className="space-y-8 min-w-[400px]"
           >
-            {/* Full Name Field */}
+             {/* Email Field */}
             <FormField
               control={form.control}
               name="name"
@@ -61,7 +70,10 @@ export default function SignUp() {
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter your name..." {...field} />
+                    <Input
+                      placeholder="Name"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -109,7 +121,8 @@ export default function SignUp() {
           </form>
         </Form>
         <span className="my-4">
-          Have an account? <Link href="/login">Log In</Link>
+          {`Don't have an account? `}
+          <Link href="/login">Log In</Link>
         </span>
       </section>
     </div>

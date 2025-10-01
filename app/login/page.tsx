@@ -12,13 +12,14 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { logInSchema } from "../schemas/logInSchema"
+import { LogInFormValues, logInSchema } from "../schemas/logInSchema"
 import Link from "next/link"
 import { useContext } from "react"
 import { useRouter } from "next/navigation"
 import { AuthContext } from "../context/AuthContext"
+import LoadingOverlay from "../layout/LoadingOverlay"
 
-type LogInFormValues = z.infer<typeof logInSchema>
+
 
 export default function LogIn() {
   const form = useForm<LogInFormValues>({
@@ -47,7 +48,7 @@ export default function LogIn() {
     }
   }
 
-  // if (loading) return <div>Loading...</div>
+  if (loading) return <LoadingOverlay/>
 
   return (
     <div className="flex flex-row h-screen bg-background w-full">

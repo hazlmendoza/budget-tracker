@@ -9,3 +9,5 @@ export const signUpSchema = z.object({
         .string()
         .min(6, { message: "Password must be at least 6 characters." }),
 })
+
+export type SignUpFormValues = z.infer<typeof signUpSchema>

@@ -1,12 +1,13 @@
-import { TransactionListType } from "@/app/api/transaction/schema"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { format } from "date-fns"
-import { ArrowDownLeft, ArrowUpRight, Eye } from "lucide-react"
-import React from "react"
+import { TransactionListType } from "@/app/api/transaction/schema";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { format } from "date-fns";
+import { ArrowDownLeft, ArrowUpRight, Eye } from "lucide-react";
+import Link from "next/link";
+import React from "react";
 
 const RecentTransactionList = ({ transactions }: TransactionListType) => {
-  const recentTransactions = transactions.slice(0, 5)
+  const recentTransactions = transactions.slice(0, 5);
   return (
     <Card className="card-elevated">
       <CardHeader className="flex flex-row items-center justify-between">
@@ -18,10 +19,12 @@ const RecentTransactionList = ({ transactions }: TransactionListType) => {
             Your latest financial activity
           </p>
         </div>
-        <Button variant="outline" size="sm" >
-          <Eye className="mr-2 h-4 w-4" />
-          View All
-        </Button>
+        <Link href={"/transactions"}>
+          <Button variant="outline" size="sm">
+            <Eye className="mr-2 h-4 w-4" />
+            View All
+          </Button>{" "}
+        </Link>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
@@ -78,7 +81,7 @@ const RecentTransactionList = ({ transactions }: TransactionListType) => {
         </div>
       </CardContent>
     </Card>
-  )
-}
+  );
+};
 
-export default RecentTransactionList
+export default RecentTransactionList;
