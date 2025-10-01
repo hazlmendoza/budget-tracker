@@ -1,10 +1,10 @@
-import { DollarSign } from "lucide-react";
-import Link from "next/link";
-import React from "react";
+import { DollarSign } from "lucide-react"
+import Link from "next/link"
+import React from "react"
 
 const Topbar: React.FC = () => {
   return (
-    <nav className="bg-primary text-white p-4 flex justify-between items-center w-full">
+    <nav className="bg-primary text-white p-3 flex justify-between items-center w-full">
       <div className="flex items-center">
         <DollarSign className="h-5 w-5 mr-2" />{" "}
         {/* Icon with size and margin */}
@@ -21,7 +21,7 @@ const Topbar: React.FC = () => {
         </Link>
       </div>
     </nav>
-  );
-};
+  )
+}
 
-export default Topbar;
+export default Topbar

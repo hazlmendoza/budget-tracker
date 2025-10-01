@@ -1,19 +1,23 @@
 import { z } from 'zod'
+import { categorySchema } from '../category/schema';
+import { atom } from 'jotai';
+
 
 export const transactionSchema = z.object({
-    id: z.number().int(),
-    name: z.string(),
+    _id: z.string().optional(),
+    date: z.date().optional(),
+    type: z.enum(['Income', 'Expense']),
     amount: z.number(),
-    category: z.string(),
-    date: z.string().refine((dateStr) => !isNaN(Date.parse(dateStr)), {
-        message: "Invalid date format",
-    }),
-    type: z.enum(["income", "expense"]),
-})
+    description: z.string().optional(),
+    categoryName: z.string().optional(),
+    categoryId: categorySchema.optional(),
+    userId: z.string()
+});
 
-export const  categoriesSchema = z.object({
-    name: z.string(),
+export const transactionListSchema = z.object({
+    transactions: z.array(transactionSchema)
 })
 
 export type TransactionType = z.infer<typeof transactionSchema>
-export type CategoriesType = z.infer<typeof categoriesSchema>
+export type TransactionListType = z.infer<typeof transactionListSchema>
+export const transactionsListAtom = atom<{ transactions: TransactionType[] }>({ transactions: [] });

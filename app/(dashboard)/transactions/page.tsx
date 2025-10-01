@@ -1,63 +1,47 @@
-"use client"
-import { Button } from "@/components/ui/button"
-import { Plus } from "lucide-react"
-import TransactionFilter from "./TransactionFilter"
-import TransactionList from "./TransactionList"
-import { useAtom } from "jotai"
-import {
-  isThisMonthActiveAtom,
-  isTodayActiveAtom,
-  searchTermAtom,
-  selectedCategoryAtom,
-  transactionsAtom,
-} from "../../store/atom"
-import { useEffect } from "react"
-import { getAllTransaction } from "../../api/transaction"
-import { transactionSchema } from "../../api/transaction/schema"
+"use client";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
+import TransactionList from "./TransactionList";
+import { useAtom } from "jotai";
+import { transactionsListAtom } from "../../store/atom";
+import { useEffect, useState } from "react";
+import { getAllTransactions } from "../../api/transaction";
+import AddTransactionModal from "./modal/AddTransactionModal";
+import { useAuth } from "@/app/context/AuthContext";
+import TransactionFilter from "./TransactionFilter";
+
+
 
 export default function Transactions() {
-  const [transactions, setTransactions] = useAtom(transactionsAtom)
-  const [selectedCategory] = useAtom(selectedCategoryAtom)
-  const [searchTerm] = useAtom(searchTermAtom)
-
-  const [isTodayActive] = useAtom(isTodayActiveAtom)
-  const [isThisMonthActive] = useAtom(isThisMonthActiveAtom)
+  const { user } = useAuth();
+  const [transactions, setTransactions] = useAtom(transactionsListAtom);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    const fetchData = () => {
-      const validatedTransactions = getAllTransaction.map((transaction) =>
-        transactionSchema.parse(transaction)
-      )
-      setTransactions(validatedTransactions)
-    }
+    const fetchData = async () => {
+      if (!user) {
+        console.error("User not found in local storage");
+        return;
+      }
 
-    fetchData()
-  }, [setTransactions])
+      try {
+        const fetchedTransactions = await getAllTransactions(user.id);
+        setTransactions(fetchedTransactions);
+      } catch (error) {
+        console.error("Error fetching transactions:", error);
+      }
+    };
 
-  const filteredTransactions = transactions.filter((transaction) => {
-    const matchesCategory =
-      selectedCategory === "All" || transaction.category === selectedCategory
+    fetchData();
+  }, [transactions, setTransactions, user]);
 
-    const matchesSearch = transaction.name
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase())
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
 
-    const transactionDate = new Date(transaction.date)
-
-    // Check if the transaction date matches today or this month, based on active filters
-    const today = new Date()
-    const isToday = transactionDate.toDateString() === today.toDateString()
-    const isThisMonth =
-      transactionDate.getMonth() === today.getMonth() &&
-      transactionDate.getFullYear() === today.getFullYear()
-
-    const matchesDateRange = isTodayActive
-      ? isToday
-      : isThisMonthActive
-      ? isThisMonth
-      : true
-    return matchesCategory && matchesSearch && matchesDateRange
-  })
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -73,22 +57,31 @@ export default function Transactions() {
                 Manage and track all your financial transactions
               </p>
             </div>
-            <Button className="btn-primary">
+            <Button className="btn-primary" onClick={handleOpenModal}>
               <Plus className="mr-2 h-4 w-4" />
               Add Transaction
             </Button>
+            <AddTransactionModal
+              isOpen={isModalOpen}
+              onClose={handleCloseModal}
+            />
           </div>
         </div>
       </div>
 
       {/* Main content */}
       <div className="p-6 space-y-6">
-        {/* Filters */}
-        <TransactionFilter />
+        {/* TO DO: Filters */}
+        {/* <TransactionFilter /> */}
 
         {/* Transactions list */}
-        <TransactionList filteredTransactions={filteredTransactions} />
+        <TransactionList transactions={
+          Array.isArray(transactions) && transactions.length > 0 && transactions[0]?.transactions
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            ? transactions.flatMap((t: any) => t.transactions)
+            : transactions
+        } />
       </div>
     </div>
-  )
+  );
 }

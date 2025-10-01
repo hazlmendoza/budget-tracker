@@ -8,7 +8,8 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { Home, BadgeDollarSign, Goal, TrendingUp, User } from "lucide-react"
+import { Home, BadgeDollarSign, Goal, TrendingUp } from "lucide-react"
+import Link from "next/link"
 
 const SideBar: React.FunctionComponent = () => {
   const items = [
@@ -16,7 +17,6 @@ const SideBar: React.FunctionComponent = () => {
     { title: "Transactions", url: "/transactions", icon: BadgeDollarSign },
     { title: "Budget", url: "/budget", icon: TrendingUp },
     { title: "Goals", url: "/goals", icon: Goal },
-    { title: "Profile", url: "/profile", icon: User },
   ]
   return (
     <Sidebar>
@@ -35,10 +35,10 @@ const SideBar: React.FunctionComponent = () => {
                   key={item.title}
                 >
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
+                    <Link href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}

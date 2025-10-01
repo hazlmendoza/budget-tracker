@@ -1,53 +1,66 @@
-                                                                                              "use client"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { ArrowDownLeft, ArrowUpRight, Edit, Trash2 } from "lucide-react"
+"use client";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ArrowDownLeft, ArrowUpRight, Edit, Trash2 } from "lucide-react";
+import { useState } from "react";
+import UpdateTransactionModal from "./modal/UpdateTransactionModal";
+import {
+  TransactionListType,
+  TransactionType,
+} from "@/app/api/transaction/schema";
+import DeleteTransactionModal from "./modal/DeleteTransactionModal";
+import { format } from "date-fns";
 
-interface TransactionListProps {
-  filteredTransactions: {
-    id: number
-    name: string
-    amount: number
-    category: string
-    date: string
-    type: string
-  }[]
-}
+const TransactionList = ({ transactions }: TransactionListType) => {
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [currentTransaction, setCurrentTransaction] =
+    useState<TransactionType | null>(null);
 
-const TransactionList = ({ filteredTransactions }: TransactionListProps) => {
-  const getCategoryBadgeVariant = (category: string) => {
-    switch (category) {
-      case "Income":
-        return "status-positive"
-      case "Food":
-        return "status-neutral"
-      case "Utilities":
-        return "status-negative"
-      default:
-        return "status-neutral"
-    }
-  }
+  const handleOpenUpdateModal = (transaction: TransactionType) => {
+    setCurrentTransaction(transaction);
+    setIsUpdateModalOpen(true);
+  };
+
+  const handleCloseUpdateModal = () => {
+    setIsUpdateModalOpen(false);
+    setCurrentTransaction(null);
+  };
+
+  const handleOpenDeleteModal = (transaction: TransactionType) => {
+    setCurrentTransaction(transaction);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleCloseDeleteModal = () => {
+    setIsDeleteModalOpen(false);
+    setCurrentTransaction(null);
+  };
 
   return (
     <Card className="card-elevated">
       <CardHeader>
         <CardTitle className="text-lg font-semibold">
-          Transaction History ({filteredTransactions.length})
+          Transaction History ({transactions.length})
         </CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-3">
-          {filteredTransactions.map((transaction) => (
+          {transactions.map((transaction) => (
             <div
-              key={transaction.id}
+              key={transaction._id}
               className="flex items-center justify-between p-4 rounded-lg bg-surface-2 hover:bg-surface-3 transition-colors duration-200"
             >
               <div className="flex items-center space-x-4">
                 <div
-                  className={`flex h-12 w-12 items-center justify-center rounded-lg bg-muted`}
+                  className={`flex h-12 w-12 items-center justify-center rounded-lg bg-muted ${
+                    transaction.categoryId?.type === "Income"
+                      ? "bg-success-light"
+                      : "bg-muted"
+                  }`}
                 >
-                  {transaction.amount > 0 ? (
+                  {transaction.categoryId?.type === "Income" ? (
                     <ArrowUpRight className="h-5 w-5 text-success" />
                   ) : (
                     <ArrowDownLeft className="h-5 w-5 text-muted-foreground" />
@@ -55,16 +68,16 @@ const TransactionList = ({ filteredTransactions }: TransactionListProps) => {
                 </div>
                 <div>
                   <p className="font-semibold text-foreground">
-                    {transaction.name}
+                    {transaction.description}
                   </p>
                   <div className="flex items-center space-x-2 mt-1">
-                    <Badge
-                      className={getCategoryBadgeVariant(transaction.category)}
-                    >
-                      {transaction.category}
+                    <Badge>
+                      {transaction.categoryId?.name || transaction.type}
                     </Badge>
                     <span className="text-sm text-muted-foreground">
-                      {transaction.date}
+                      {transaction.date
+                        ? format(transaction.date, "yyyy-MM-dd")
+                        : "No date available"}
                     </span>
                   </div>
                 </div>
@@ -74,23 +87,30 @@ const TransactionList = ({ filteredTransactions }: TransactionListProps) => {
                 <div className="text-right">
                   <p
                     className={`text-lg font-bold ${
-                      transaction.amount > 0
+                      transaction.categoryId?.type === "Income"
                         ? "text-success"
                         : "text-foreground"
                     }`}
                   >
-                    {transaction.amount > 0 ? "+" : "-"}$
+                    {transaction.categoryId?.type === "Income" ? "+" : "-"}$
                     {Math.abs(transaction.amount).toFixed(2)}
                   </p>
                 </div>
 
                 <div className="flex items-center space-x-2">
-                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                    <Edit className="h-4 w-4" />
-                  </Button>
                   <Button
                     variant="ghost"
                     size="sm"
+                    onClick={() => handleOpenUpdateModal(transaction)}
+                    className="h-8 w-8 p-0"
+                  >
+                    <Edit className="h-4 w-4" />
+                  </Button>
+
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => handleOpenDeleteModal(transaction)}
                     className="h-8 w-8 p-0 text-destructive hover:text-destructive"
                   >
                     <Trash2 className="h-4 w-4" />
@@ -101,16 +121,32 @@ const TransactionList = ({ filteredTransactions }: TransactionListProps) => {
           ))}
         </div>
 
-        {filteredTransactions.length === 0 && (
+        {transactions.length === 0 && (
           <div className="text-center py-12">
-            <p className="text-muted-foreground">
-              No transactions found.
-            </p>
+            <p className="text-muted-foreground">No transactions found.</p>
           </div>
         )}
       </CardContent>
-    </Card>
-  )
-}
 
-export default TransactionList
+      {/* Update Transaction Modal */}
+      {isUpdateModalOpen && (
+        <UpdateTransactionModal
+          isOpen={isUpdateModalOpen}
+          onClose={handleCloseUpdateModal}
+          transaction={currentTransaction}
+        />
+      )}
+
+      {/* Delete Transaction Modal */}
+      {isDeleteModalOpen && (
+        <DeleteTransactionModal
+          isOpen={isDeleteModalOpen}
+          onClose={handleCloseDeleteModal}
+          transaction={currentTransaction}
+        />
+      )}
+    </Card>
+  );
+};
+
+export default TransactionList;
