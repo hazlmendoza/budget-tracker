@@ -68,9 +68,7 @@ export const IncomeExpenseChart = ({ transactions }: TransactionListType) => {
   return (
     <div style={{ height: "400px", width: "100%" }}>
       <ResponsiveContainer width="100%" height="100%">
-        {isLoading ? (
-          <SkeletonLoader />
-        ) : data.length > 0 ? (
+        {data.length > 0 ? (
           <BarChart
             data={data}
             margin={{ top: 20, right: 30, left: 20, bottom: 5 }}

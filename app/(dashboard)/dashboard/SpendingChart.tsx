@@ -72,9 +72,7 @@ export const SpendingChart = ({ transactions }: TransactionListType) => {
     <div>
       <div style={{ height: "400px", width: "100%" }}>
         <ResponsiveContainer width="100%" height="100%">
-          {isLoading ? (
-            <SkeletonLoader />
-          ) : data.length > 0 ? (
+          { data.length > 0 ? (
             <PieChart>
               <Pie
                 data={data}

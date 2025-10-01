@@ -139,6 +139,11 @@ const GoalsList = ({ goals }: GoalListType) => {
               </div>
             )
           })}
+          {goals.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-muted-foreground">No goals found.</p>
+          </div>
+        )}
         </CardContent>
         {/* Update Goal Modal */}
         {isUpdateModalOpen && (

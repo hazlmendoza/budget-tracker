@@ -127,6 +127,11 @@ const BudgetList = ({ budgets }: BudgetListType) => {
             );
           })}
         </CardContent>
+        {budgets.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-muted-foreground">No budgets found.</p>
+          </div>
+        )}
 
         {/* Update Budget Modal */}
         {isUpdateModalOpen && (

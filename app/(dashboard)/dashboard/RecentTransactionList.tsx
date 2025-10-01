@@ -80,6 +80,11 @@ const RecentTransactionList = ({ transactions }: TransactionListType) => {
           ))}
         </div>
       </CardContent>
+      {transactions.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-muted-foreground">No transactions found.</p>
+          </div>
+        )}
     </Card>
   );
 };
