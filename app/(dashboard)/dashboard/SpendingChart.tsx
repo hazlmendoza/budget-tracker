@@ -10,12 +10,6 @@ import {
 import { useMemo } from "react";
 import EmptyData from "./EmptyData";
 
-const SkeletonLoader = () => (
-  <div className="flex items-center justify-center h-full">
-    <div className="animate-pulse bg-gray-200 rounded-full h-24 w-24"></div>
-  </div>
-);
-
 const RADIAN = Math.PI / 180;
 
 const renderCustomizedLabel = ({

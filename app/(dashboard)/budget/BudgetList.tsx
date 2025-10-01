@@ -134,7 +134,7 @@ const BudgetList = ({ budgets }: BudgetListType) => {
         )}
 
         {/* Update Budget Modal */}
-        {isUpdateModalOpen && (
+        {isUpdateModalOpen && currentBudget && (
           <UpdateBudgetModal
             isOpen={isUpdateModalOpen}
             onClose={handleCloseUpdateModal}
@@ -143,7 +143,7 @@ const BudgetList = ({ budgets }: BudgetListType) => {
         )}
 
         {/* Delete Budget Modal */}
-        {isDeleteModalOpen && (
+        {isDeleteModalOpen && currentBudget && (
           <DeleteBudgetModal
             isOpen={isDeleteModalOpen}
             onClose={handleCloseDeleteModal}

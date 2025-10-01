@@ -5,7 +5,7 @@ interface ProfileDetailsProps {
   position: { top: number; left: number }
 }
 
-const ProfileDetails: React.FC<ProfileDetailsProps> = ({ isOpen, onClose, children, position }) => {
+const ProfileDetails: React.FC<ProfileDetailsProps> = ({ isOpen, children, position }) => {
   if (!isOpen) return null;
   return (
     <div

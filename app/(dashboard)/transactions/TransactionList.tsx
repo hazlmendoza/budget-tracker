@@ -129,7 +129,7 @@ const TransactionList = ({ transactions }: TransactionListType) => {
       </CardContent>
 
       {/* Update Transaction Modal */}
-      {isUpdateModalOpen && (
+      {isUpdateModalOpen && currentTransaction && (
         <UpdateTransactionModal
           isOpen={isUpdateModalOpen}
           onClose={handleCloseUpdateModal}
@@ -138,7 +138,7 @@ const TransactionList = ({ transactions }: TransactionListType) => {
       )}
 
       {/* Delete Transaction Modal */}
-      {isDeleteModalOpen && (
+      {isDeleteModalOpen && currentTransaction && (
         <DeleteTransactionModal
           isOpen={isDeleteModalOpen}
           onClose={handleCloseDeleteModal}

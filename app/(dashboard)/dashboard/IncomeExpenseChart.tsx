@@ -9,14 +9,8 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { useMemo } from "react";
-import { FileMinus } from "lucide-react";
 import EmptyData from "./EmptyData";
 
-const SkeletonLoader = () => (
-  <div className="flex items-center justify-center h-full">
-    <div className="animate-pulse bg-gray-200 rounded h-24 w-full"></div>
-  </div>
-);
 
 export const IncomeExpenseChart = ({ transactions }: TransactionListType) => {
   const isLoading = !transactions || transactions.length === 0;
