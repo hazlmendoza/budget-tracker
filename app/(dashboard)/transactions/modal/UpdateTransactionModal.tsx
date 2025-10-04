@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/select";
 import { updateTransaction } from "@/app/api/transaction";
 import { useAuth } from "@/app/context/AuthContext";
+import { toast } from "sonner";
 
 interface UpdateTransactionModalProps {
   isOpen: boolean;
@@ -66,8 +67,14 @@ const UpdateTransactionModal: React.FC<UpdateTransactionModalProps> = ({
       };
 
       await updateTransaction(transaction._id, formattedValues);
+      toast.success("Transaction Updated!", {
+        description: "Your transaction has been successfully updated.",
+      })
       onClose();
     } catch (error) {
+      toast.error("Transaction Failed!", {
+        description: "Something went wrong while updating your transaction.",
+      })
       console.log(error);
     }
   };

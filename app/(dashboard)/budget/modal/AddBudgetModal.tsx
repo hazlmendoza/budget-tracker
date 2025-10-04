@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 interface AddBudgetModalProps {
   isOpen: boolean;
@@ -44,8 +45,14 @@ const AddBudgetModal: React.FC<AddBudgetModalProps> = ({ isOpen, onClose }) => {
         userId: user.id,
       };
       await addBudget(formattedValues);
+      toast.success("Budget Created!", {
+        description: "Your budget has been successfully added.",
+      });
       onClose();
     } catch (error) {
+      toast.error("Budget Failed!", {
+        description: "Something went wrong while adding your budget.",
+      });
       console.log(error);
     }
   };

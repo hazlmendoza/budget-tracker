@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/app/context/AuthContext";
 import { BudgetType } from "@/app/api/budget/schema";
 import { deleteBudget } from "@/app/api/budget";
+import { toast } from "sonner";
 
 interface DeleteBudgetModalProps {
   isOpen: boolean;
@@ -27,8 +28,14 @@ const DeleteBudgetModal: React.FC<DeleteBudgetModalProps> = ({
       }
 
       await deleteBudget(budget._id);
+      toast.success("Budget Deleted!", {
+        description: "Your budget has been successfully deleted.",
+      });
       onClose();
     } catch (error) {
+      toast.error("Budget Failed!", {
+        description: "Something went wrong while deleting your budget.",
+      });
       console.log(error);
     }
   };
@@ -41,8 +48,8 @@ const DeleteBudgetModal: React.FC<DeleteBudgetModalProps> = ({
         <h1 className="text-lg font-bold mb-8">Confirm Deletion</h1>
         <p className="mb-4 text-gray-700">
           Are you sure you want to delete the budget for{" "}
-          <span className="font-semibold">{budget?.categoryName}</span>?
-          This action cannot be undone.
+          <span className="font-semibold">{budget?.categoryName}</span>? This
+          action cannot be undone.
         </p>
         <div className="mt-8 flex justify-end">
           <Button onClick={onClose} className="mr-4 min-w-28">

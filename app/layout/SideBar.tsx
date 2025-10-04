@@ -26,7 +26,7 @@ const SideBar: React.FunctionComponent = () => {
             <div className=" bg-primary rounded-sm p-2">
               <TrendingUp className="text-white rounded-sm" />
             </div>
-            <span className="text-lg">Finance App</span>
+            <span className="text-lg">Savis</span>
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>

@@ -1,9 +1,8 @@
 import { Button } from "@/components/ui/button";
-import {
-  TransactionType,
-} from "@/app/api/transaction/schema";
+import { TransactionType } from "@/app/api/transaction/schema";
 import { deleteTransaction } from "@/app/api/transaction";
 import { useAuth } from "@/app/context/AuthContext";
+import { toast } from "sonner";
 
 interface DeleteTransactionModalProps {
   isOpen: boolean;
@@ -17,7 +16,7 @@ const DeleteTransactionModal: React.FC<DeleteTransactionModalProps> = ({
   transaction,
 }) => {
   const { user } = useAuth();
- 
+
   const handleDelete = async () => {
     try {
       if (!user?.id) {
@@ -26,11 +25,17 @@ const DeleteTransactionModal: React.FC<DeleteTransactionModalProps> = ({
       if (!transaction._id) {
         throw new Error("Transaction ID is not available.");
       }
-      
+
       await deleteTransaction(transaction._id);
-      onClose();
+      toast.success("Transaction Deleted!", {
+        description: "Your transaction has been successfully deleted.",
+      })
+      onClose()
     } catch (error) {
-      console.log(error);
+      toast.error("Transaction Failed!", {
+        description: "Something went wrong while deleting your transaction.",
+      })
+      console.log(error)
     }
   };
 
@@ -41,7 +46,8 @@ const DeleteTransactionModal: React.FC<DeleteTransactionModalProps> = ({
       <div className="bg-background p-6 rounded-lg shadow-lg">
         <h1 className="text-lg font-bold mb-8">Confirm Deletion</h1>
         <p className="mb-4 text-gray-700">
-          Are you sure you want to delete this transaction? This action cannot be undone.
+          Are you sure you want to delete this transaction? This action cannot
+          be undone.
         </p>
         <div className="mt-8 flex justify-end">
           <Button onClick={onClose} className="mr-4 min-w-28">

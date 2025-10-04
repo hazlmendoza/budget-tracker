@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input"
 import { zodResolver } from "@hookform/resolvers/zod"
 import React from "react"
 import { useForm } from "react-hook-form"
+import { toast } from "sonner"
 
 interface AddGoalModalProps {
   isOpen: boolean
@@ -47,8 +48,14 @@ const AddGoalModal: React.FC<AddGoalModalProps> = ({ isOpen, onClose }) => {
       }
 
       await addGoal(formattedValues)
+      toast.success("Goal Created!", {
+              description: "Your goal has been successfully added.",
+            });
       onClose()
     } catch (error) {
+      toast.error("Goal Failed!", {
+              description: "Something went wrong while adding your goal.",
+            });
       console.error(error)
     }
   }

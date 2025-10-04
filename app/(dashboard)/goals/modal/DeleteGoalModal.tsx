@@ -3,6 +3,7 @@ import { GoalType } from "@/app/api/goals/schema";
 import { useAuth } from "@/app/context/AuthContext";
 import { Button } from "@/components/ui/button";
 import React from "react";
+import { toast } from "sonner";
 
 interface DeleteGoalModalProps {
   isOpen: boolean;
@@ -27,8 +28,14 @@ const DeleteGoalModal: React.FC<DeleteGoalModalProps> = ({
       }
 
       await deleteGoal(goal._id);
+      toast.success("Goal Deleted!", {
+              description: "Your goal has been successfully deleted.",
+            });
       onClose();
     } catch (error) {
+      toast.error("Goal Failed!", {
+              description: "Something went wrong while deleting your goal.",
+            });
       console.log(error);
     }
   };

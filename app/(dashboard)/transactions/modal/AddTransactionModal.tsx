@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/select";
 import { addTransaction } from "@/app/api/transaction";
 import { useAuth } from "@/app/context/AuthContext";
+import { toast } from "sonner";
 
 interface AddTransactionModalProps {
   isOpen: boolean;
@@ -52,7 +53,7 @@ const AddTransactionModal: React.FC<AddTransactionModalProps> = ({
       if (!user?.id) {
         throw new Error("User ID is not available.");
       }
-       const formattedValues = {
+      const formattedValues = {
         date: values.date ? new Date(values.date) : new Date(),
         type: values.type,
         amount: Number(values.amount),
@@ -63,8 +64,14 @@ const AddTransactionModal: React.FC<AddTransactionModalProps> = ({
 
       await addTransaction(formattedValues);
       console.log("Sending request with values:", formattedValues);
+      toast.success("Transaction Created!", {
+        description: "Your transaction has been successfully added.",
+      });
       onClose();
     } catch (error) {
+      toast.error("Transaction Failed!", {
+        description: "Something went wrong while adding your transaction.",
+      });
       console.log(error);
     }
   };

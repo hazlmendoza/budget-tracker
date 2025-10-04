@@ -1,17 +1,25 @@
-import { updateGoal } from "@/app/api/goals"
-import { GoalSchema, GoalType } from "@/app/api/goals/schema"
-import { useAuth } from "@/app/context/AuthContext"
-import { Button } from "@/components/ui/button"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { zodResolver } from "@hookform/resolvers/zod"
-import React from "react"
-import { useForm } from "react-hook-form"
+import { updateGoal } from "@/app/api/goals";
+import { GoalSchema, GoalType } from "@/app/api/goals/schema";
+import { useAuth } from "@/app/context/AuthContext";
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { zodResolver } from "@hookform/resolvers/zod";
+import React from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 interface UpdateGoalModalProps {
-  isOpen: boolean
-  onClose: () => void
-  goal: GoalType
+  isOpen: boolean;
+  onClose: () => void;
+  goal: GoalType;
 }
 
 const UpdateGoalModal: React.FC<UpdateGoalModalProps> = ({
@@ -19,7 +27,7 @@ const UpdateGoalModal: React.FC<UpdateGoalModalProps> = ({
   onClose,
   goal,
 }) => {
-  const { user } = useAuth()
+  const { user } = useAuth();
   const form = useForm<GoalType>({
     resolver: zodResolver(GoalSchema),
     defaultValues: {
@@ -30,15 +38,15 @@ const UpdateGoalModal: React.FC<UpdateGoalModalProps> = ({
       targetAmount: goal.targetAmount,
       currentAmount: goal.currentAmount,
     },
-  })
+  });
 
   const onSubmit = async (values: GoalType) => {
     try {
       if (!user?.id) {
-        throw new Error("User ID is not available.")
+        throw new Error("User ID is not available.");
       }
       if (!goal._id) {
-        throw new Error("Goal ID is not available.")
+        throw new Error("Goal ID is not available.");
       }
 
       const formattedValues = {
@@ -48,17 +56,24 @@ const UpdateGoalModal: React.FC<UpdateGoalModalProps> = ({
         dueDate: values.dueDate ? new Date(values.dueDate) : new Date(),
         startDate: values.startDate ? new Date(values.startDate) : new Date(),
         userId: user.id,
-      }
+      };
 
-      await updateGoal(goal._id, formattedValues)
-      onClose()
+      await updateGoal(goal._id, formattedValues);
+      toast.success("Goal Updated!", {
+        description: "Your goal has been successfully updated.",
+      });
+      onClose();
     } catch (error) {
-      console.error(error)
+      toast.error("Goal Failed!", {
+        description: "Something went wrong while updating your goal.",
+      });
+      console.error(error);
     }
-  }
+  };
 
-  if (!isOpen) return null
-  return <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+  if (!isOpen) return null;
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
       <div className="bg-background p-6 rounded-lg shadow-lg">
         <h1 className="text-lg font-bold mb-8">Add Goal</h1>
         <Form {...form}>
@@ -167,7 +182,7 @@ const UpdateGoalModal: React.FC<UpdateGoalModalProps> = ({
               )}
             />
 
-              <FormField
+            <FormField
               control={form.control}
               name="currentAmount"
               render={({ field }) => (
@@ -198,6 +213,7 @@ const UpdateGoalModal: React.FC<UpdateGoalModalProps> = ({
         </Form>
       </div>
     </div>
-}
+  );
+};
 
-export default UpdateGoalModal
+export default UpdateGoalModal;

@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 interface UpdateBudgetModalProps {
   isOpen: boolean;
@@ -21,7 +22,11 @@ interface UpdateBudgetModalProps {
   budget: BudgetType;
 }
 
-const UpdateBudgetModal: React.FC<UpdateBudgetModalProps> = ({ isOpen, onClose, budget }) => {
+const UpdateBudgetModal: React.FC<UpdateBudgetModalProps> = ({
+  isOpen,
+  onClose,
+  budget,
+}) => {
   const { user } = useAuth();
 
   const form = useForm<BudgetType>({
@@ -54,8 +59,14 @@ const UpdateBudgetModal: React.FC<UpdateBudgetModalProps> = ({ isOpen, onClose, 
         userId: user.id,
       };
       await updateBudget(budget._id, formattedValues);
+      toast.success("Budget Updated!", {
+        description: "Your budget has been successfully updated.",
+      });
       onClose();
     } catch (error) {
+      toast.error("Budget Failed!", {
+        description: "Something went wrong while updating your budget.",
+      });
       console.log(error);
     }
   };
