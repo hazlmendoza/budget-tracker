@@ -1,17 +1,19 @@
-import Loading from "@/components/Loading"
-import CommonTopbar from "./layout/CommonTopBar"
-import { Suspense } from "react"
+import Loading from "@/components/Loading";
+import CommonTopbar from "./layout/CommonTopBar";
+import { Suspense } from "react";
+import LandingPage from "./layout/LandingPage";
 
-const LandingPage = () => {
+const Page = () => {
   return (
-    <Suspense fallback={<Loading/>}>
-      <div>
-        <CommonTopbar />
-        This is a landing page.
-        {/* <Dashboard/> */}
-      </div>
-    </Suspense>
-  )
-}
+    <>
+      <Suspense fallback={<Loading />}>
+        <div>
+          <CommonTopbar />
+          <LandingPage />
+        </div>
+      </Suspense>
+    </>
+  );
+};
 
-export default LandingPage
+export default Page;

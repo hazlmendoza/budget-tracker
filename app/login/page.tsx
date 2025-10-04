@@ -11,12 +11,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { LogInFormValues, logInSchema } from "../schemas/logInSchema";
 import Link from "next/link";
 import { useContext } from "react";
 import { useRouter } from "next/navigation";
 import { AuthContext } from "../context/AuthContext";
 import LoadingOverlay from "../layout/LoadingOverlay";
+import { LogInFormValues, logInSchema } from "../api/auth/schema";
 
 export default function LogIn() {
   const form = useForm<LogInFormValues>({

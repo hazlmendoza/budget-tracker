@@ -8,7 +8,7 @@ const Topbar: React.FC = () => {
     <nav className="bg-primary text-white p-3 flex justify-between items-center w-full">
       <div className="flex items-center">
         <Link className="text-md" href="/dashboard">
-          Finance App
+          Savis
         </Link>
       </div>
       <div className="flex">

@@ -15,8 +15,8 @@ import Link from "next/link";
 import { useContext } from "react";
 import { useRouter } from "next/navigation";
 import { AuthContext } from "../context/AuthContext";
-import { SignUpFormValues, signUpSchema } from "../schemas/signUpSchema";
 import LoadingOverlay from "../layout/LoadingOverlay";
+import { SignUpFormValues, signUpSchema } from "../api/auth/schema";
 
 export default function SignUp() {
   const form = useForm<SignUpFormValues>({

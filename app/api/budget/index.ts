@@ -1,7 +1,6 @@
 import { BudgetType } from './schema';
 import axiosInstance from '../axiosInstance';
 
-// API functions
 export const getAllBudgets = async (userId: string) => {
     const response = await axiosInstance.get(`/budgets/${userId}`);
     return response.data;
