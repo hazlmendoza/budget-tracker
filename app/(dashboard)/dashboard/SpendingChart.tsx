@@ -1,4 +1,4 @@
-import { TransactionListType } from "@/app/api/transaction/schema";
+import { TransactionListType } from "@/app/api/transaction/schema"
 import {
   PieChart,
   Pie,
@@ -6,11 +6,11 @@ import {
   ResponsiveContainer,
   Tooltip,
   Legend,
-} from "recharts";
-import { useMemo } from "react";
-import EmptyData from "./EmptyData";
+} from "recharts"
+import { useMemo } from "react"
+import EmptyData from "./EmptyData"
 
-const RADIAN = Math.PI / 180;
+const RADIAN = Math.PI / 180
 
 const renderCustomizedLabel = ({
   cx,
@@ -21,10 +21,10 @@ const renderCustomizedLabel = ({
   percent,
 }: // eslint-disable-next-line @typescript-eslint/no-explicit-any
 any) => {
-  if (percent < 0.05) return null;
-  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-  const x = cx + radius * Math.cos(-midAngle * RADIAN);
-  const y = cy + radius * Math.sin(-midAngle * RADIAN);
+  if (percent < 0.05) return null
+  const radius = innerRadius + (outerRadius - innerRadius) * 0.5
+  const x = cx + radius * Math.cos(-midAngle * RADIAN)
+  const y = cy + radius * Math.sin(-midAngle * RADIAN)
 
   return (
     <text
@@ -37,30 +37,30 @@ any) => {
     >
       {`${(percent * 100).toFixed(0)}%`}
     </text>
-  );
-};
+  )
+}
 
-const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#FF6699", "#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#FF6699",];
+const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#FF6699", "#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#FF6699",]
 
 export const SpendingChart = ({ transactions }: TransactionListType) => {
-  const isLoading = !transactions || transactions.length === 0;
+  const isLoading = !transactions || transactions.length === 0
 
   const data = useMemo(() => {
-    if (isLoading) return [];
+    if (isLoading) return []
     const dataMap = transactions.reduce((acc, transaction) => {
-      const category = transaction.categoryId?.name || "Uncategorized";
+      const category = transaction.categoryId?.name || "Uncategorized"
       if (!acc[category]) {
-        acc[category] = { name: category, value: 0 };
+        acc[category] = { name: category, value: 0 }
       }
-      acc[category].value += transaction.amount;
-      return acc;
-    }, {} as { [key: string]: { name: string; value: number } });
+      acc[category].value += transaction.amount
+      return acc
+    }, {} as { [key: string]: { name: string; value: number } })
 
     return Object.values(dataMap).map((entry, index) => ({
       ...entry,
       color: COLORS[index],
-    }));
-  }, [transactions, isLoading]);
+    }))
+  }, [transactions, isLoading])
 
   return (
     <div>
@@ -106,5 +106,5 @@ export const SpendingChart = ({ transactions }: TransactionListType) => {
         </ResponsiveContainer>
       </div>
     </div>
-  );
-};
+  )
+}

@@ -1,7 +1,7 @@
-import { updateBudget } from "@/app/api/budget";
-import { BudgetSchema, BudgetType } from "@/app/api/budget/schema";
-import { useAuth } from "@/app/context/AuthContext";
-import { Button } from "@/components/ui/button";
+import { updateBudget } from "@/app/api/budget"
+import { BudgetSchema, BudgetType } from "@/app/api/budget/schema"
+import { useAuth } from "@/app/context/AuthContext"
+import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
@@ -9,17 +9,17 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { zodResolver } from "@hookform/resolvers/zod"
+import React from "react"
+import { useForm } from "react-hook-form"
+import { toast } from "sonner"
 
 interface UpdateBudgetModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  budget: BudgetType;
+  isOpen: boolean
+  onClose: () => void
+  budget: BudgetType
 }
 
 const UpdateBudgetModal: React.FC<UpdateBudgetModalProps> = ({
@@ -27,7 +27,7 @@ const UpdateBudgetModal: React.FC<UpdateBudgetModalProps> = ({
   onClose,
   budget,
 }) => {
-  const { user } = useAuth();
+  const { user } = useAuth()
 
   const form = useForm<BudgetType>({
     resolver: zodResolver(BudgetSchema),
@@ -39,15 +39,15 @@ const UpdateBudgetModal: React.FC<UpdateBudgetModalProps> = ({
       spent: budget.spent,
       userId: user?.id,
     },
-  });
+  })
 
   const onSubmit = async (values: BudgetType) => {
     try {
       if (!user?.id) {
-        throw new Error("User ID is not available.");
+        throw new Error("User ID is not available.")
       }
       if (!budget._id) {
-        throw new Error("Budget ID is not available.");
+        throw new Error("Budget ID is not available.")
       }
       const formattedValues = {
         categoryName: values.categoryName,
@@ -57,20 +57,20 @@ const UpdateBudgetModal: React.FC<UpdateBudgetModalProps> = ({
         endDate: values.endDate ? new Date(values.endDate) : new Date(),
         startDate: values.startDate ? new Date(values.startDate) : new Date(),
         userId: user.id,
-      };
-      await updateBudget(budget._id, formattedValues);
+      }
+      await updateBudget(budget._id, formattedValues)
       toast.success("Budget Updated!", {
         description: "Your budget has been successfully updated.",
-      });
-      onClose();
+      })
+      onClose()
     } catch (error) {
       toast.error("Budget Failed!", {
         description: "Something went wrong while updating your budget.",
-      });
-      console.log(error);
+      })
+      console.log(error)
     }
-  };
-  if (!isOpen) return null;
+  }
+  if (!isOpen) return null
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
@@ -114,8 +114,8 @@ const UpdateBudgetModal: React.FC<UpdateBudgetModalProps> = ({
                             : ""
                         }
                         onChange={(e) => {
-                          const value = e.target.value;
-                          field.onChange(value ? new Date(value) : undefined);
+                          const value = e.target.value
+                          field.onChange(value ? new Date(value) : undefined)
                         }}
                         onBlur={field.onBlur}
                         name={field.name}
@@ -146,8 +146,8 @@ const UpdateBudgetModal: React.FC<UpdateBudgetModalProps> = ({
                             : ""
                         }
                         onChange={(e) => {
-                          const value = e.target.value;
-                          field.onChange(value ? new Date(value) : undefined);
+                          const value = e.target.value
+                          field.onChange(value ? new Date(value) : undefined)
                         }}
                         onBlur={field.onBlur}
                         name={field.name}
@@ -209,7 +209,7 @@ const UpdateBudgetModal: React.FC<UpdateBudgetModalProps> = ({
         </Form>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default UpdateBudgetModal;
+export default UpdateBudgetModal

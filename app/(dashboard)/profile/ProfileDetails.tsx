@@ -6,7 +6,7 @@ interface ProfileDetailsProps {
 }
 
 const ProfileDetails: React.FC<ProfileDetailsProps> = ({ isOpen, children, position }) => {
-  if (!isOpen) return null;
+  if (!isOpen) return null
   return (
     <div
       className="w-96 bg-white text-black p-6 rounded shadow-lg"
@@ -20,7 +20,7 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({ isOpen, children, posit
     >
       {children}
     </div>
-  );
-};
+  )
+}
 
-export default ProfileDetails;
+export default ProfileDetails

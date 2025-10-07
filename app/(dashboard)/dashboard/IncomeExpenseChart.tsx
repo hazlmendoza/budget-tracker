@@ -1,4 +1,4 @@
-import { TransactionListType } from "@/app/api/transaction/schema";
+import { TransactionListType } from "@/app/api/transaction/schema"
 import {
   BarChart,
   Bar,
@@ -7,57 +7,57 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-} from "recharts";
-import { useMemo } from "react";
-import EmptyData from "./EmptyData";
+} from "recharts"
+import { useMemo } from "react"
+import EmptyData from "./EmptyData"
 
 
 export const IncomeExpenseChart = ({ transactions }: TransactionListType) => {
-  const isLoading = !transactions || transactions.length === 0;
+  const isLoading = !transactions || transactions.length === 0
 
   // Calculate the last 6 months
   const getLastSixMonths = () => {
-    const now = new Date();
-    const months = [];
+    const now = new Date()
+    const months = []
     for (let i = 5; i >= 0; i--) {
-      const month = new Date(now.getFullYear(), now.getMonth() - i);
-      months.push(month.toLocaleString("default", { month: "long" })); // Get month name
+      const month = new Date(now.getFullYear(), now.getMonth() - i)
+      months.push(month.toLocaleString("default", { month: "long" })) // Get month name
     }
-    return months;
-  };
+    return months
+  }
 
-  const months = getLastSixMonths();
+  const months = getLastSixMonths()
 
   const data = useMemo(() => {
-    if (isLoading) return [];
+    if (isLoading) return []
     const result = months.map((month) => ({
       month,
       income: 0,
       expenses: 0,
-    }));
+    }))
 
     transactions.forEach((transaction) => {
       const transactionDate = transaction.date
         ? new Date(transaction.date)
-        : null;
+        : null
       if (transactionDate) {
         const transactionMonth = transactionDate.toLocaleString("default", {
           month: "long",
-        });
+        })
 
-        const monthIndex = months.indexOf(transactionMonth);
+        const monthIndex = months.indexOf(transactionMonth)
         if (monthIndex !== -1) {
           if (transaction.type === "Income") {
-            result[monthIndex].income += transaction.amount;
+            result[monthIndex].income += transaction.amount
           } else if (transaction.type === "Expense") {
-            result[monthIndex].expenses += transaction.amount;
+            result[monthIndex].expenses += transaction.amount
           }
         }
       }
-    });
+    })
 
-    return result;
-  }, [transactions, months, isLoading]);
+    return result
+  }, [transactions, months, isLoading])
 
   return (
     <div style={{ height: "400px", width: "100%" }}>
@@ -91,7 +91,7 @@ export const IncomeExpenseChart = ({ transactions }: TransactionListType) => {
             <Tooltip
               formatter={(value: number, name: string) => [
                 `$${value.toLocaleString()}`,
-                name === "income" ? "Income" : "Expenses",
+                name === "Expenses" ? "Expenses" : "Income",
               ]}
               contentStyle={{
                 backgroundColor: "var(--card)",
@@ -122,5 +122,5 @@ export const IncomeExpenseChart = ({ transactions }: TransactionListType) => {
         )}
       </ResponsiveContainer>
     </div>
-  );
-};
+  )
+}

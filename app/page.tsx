@@ -1,7 +1,7 @@
-import Loading from "@/components/Loading";
-import CommonTopbar from "./layout/CommonTopBar";
-import { Suspense } from "react";
-import LandingPage from "./layout/LandingPage";
+import Loading from "@/components/Loading"
+import CommonTopbar from "./layout/CommonTopBar"
+import { Suspense } from "react"
+import LandingPage from "./layout/LandingPage"
 
 const Page = () => {
   return (
@@ -13,7 +13,7 @@ const Page = () => {
         </div>
       </Suspense>
     </>
-  );
-};
+  )
+}
 
-export default Page;
+export default Page

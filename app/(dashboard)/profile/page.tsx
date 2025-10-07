@@ -1,54 +1,54 @@
 'use client'
-import React, { useState, useRef, useContext } from "react";
-import ProfileDetails from "./ProfileDetails";
-import { AuthContext, useAuth } from "@/app/context/AuthContext";
-import { LogOut } from "lucide-react";
-import { useRouter } from 'next/navigation';
+import React, { useState, useRef, useContext } from "react"
+import ProfileDetails from "./ProfileDetails"
+import { AuthContext, useAuth } from "@/app/context/AuthContext"
+import { LogOut } from "lucide-react"
+import { useRouter } from 'next/navigation'
 
 const ProfileLetter = () => {
-  const router = useRouter();
-  const authContext = useContext(AuthContext);
+  const router = useRouter()
+  const authContext = useContext(AuthContext)
   if (!authContext) {
-    throw new Error("Topbar must be used within an AuthProvider");
+    throw new Error("Topbar must be used within an AuthProvider")
   }
-  const { user } = useAuth();
-  const { logout } = authContext;
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
+  const { user } = useAuth()
+  const { logout } = authContext
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 })
 
-  const letterRef = useRef<HTMLDivElement>(null);
+  const letterRef = useRef<HTMLDivElement>(null)
 
   const handleLetterClick = () => {
     if (isModalOpen) {
-      setIsModalOpen(false);
+      setIsModalOpen(false)
     } else {
       if (letterRef.current) {
-        const rect = letterRef.current.getBoundingClientRect();
+        const rect = letterRef.current.getBoundingClientRect()
         setModalPosition({
           top: rect.bottom + 5 + window.scrollY,
           left: rect.right - 200 + window.scrollX,
-        });
+        })
       }
-      setIsModalOpen(true);
+      setIsModalOpen(true)
     }
-  };
+  }
 
   const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
+    setIsModalOpen(false)
+  }
 
   const handleLogOut = async () => {
     try {
-      await logout();
+      await logout()
       handleCloseModal()
-      router.push("/");
+      router.push("/")
     } catch (error) {
-      console.error("Login failed:", error);
+      console.error("Login failed:", error)
     }
-  };
+  }
 
-  const username = user?.username || "User";
-  const firstLetter = username.charAt(0).toUpperCase();
+  const username = user?.username || "User"
+  const firstLetter = username.charAt(0).toUpperCase()
 
   return (
     <>
@@ -82,7 +82,7 @@ const ProfileLetter = () => {
         </div>
       </ProfileDetails>
     </>
-  );
-};
+  )
+}
 
-export default ProfileLetter;
+export default ProfileLetter

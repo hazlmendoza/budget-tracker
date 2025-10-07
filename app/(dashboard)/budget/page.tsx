@@ -1,46 +1,46 @@
-"use client";
-import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
-import BudgetOverview from "./BudgetOverview";
-import BudgetAlert from "./BudgetAlert";
-import BudgetList from "./BudgetList";
-import { useAuth } from "@/app/context/AuthContext";
-import { budgetsListAtom } from "@/app/store/atom";
-import { useAtom } from "jotai";
-import { useEffect, useState } from "react";
-import { getAllBudgets } from "@/app/api/budget";
-import AddBudgetModal from "./modal/AddBudgetModal";
+"use client"
+import { Button } from "@/components/ui/button"
+import { Plus } from "lucide-react"
+import BudgetOverview from "./BudgetOverview"
+import BudgetAlert from "./BudgetAlert"
+import BudgetList from "./BudgetList"
+import { useAuth } from "@/app/context/AuthContext"
+import { budgetsListAtom } from "@/app/store/atom"
+import { useAtom } from "jotai"
+import { useEffect, useState } from "react"
+import { getAllBudgets } from "@/app/api/budget"
+import AddBudgetModal from "./modal/AddBudgetModal"
 
 export default function Budget() {
-  const { user } = useAuth();
-  const [budgets, setBudgets] = useAtom(budgetsListAtom);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { user } = useAuth()
+  const [budgets, setBudgets] = useAtom(budgetsListAtom)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   useEffect(() => {
     const fetchData = async () => {
       if (!user) {
-        console.error("User not found in local storage");
-        return;
+        console.error("User not found in local storage")
+        return
       }
 
       try {
-        const budgets = await getAllBudgets(user.id);
-        setBudgets(budgets);
+        const budgets = await getAllBudgets(user.id)
+        setBudgets(budgets)
       } catch (error) {
-        console.error("Error fetching transactions:", error);
+        console.error("Error fetching transactions:", error)
       }
-    };
+    }
 
-    fetchData();
-  }, [budgets, setBudgets, user]);
+    fetchData()
+  }, [budgets, setBudgets, user])
 
   const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
+    setIsModalOpen(true)
+  }
 
   const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
+    setIsModalOpen(false)
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -96,5 +96,5 @@ export default function Budget() {
         />
       </div>
     </div>
-  );
+  )
 }

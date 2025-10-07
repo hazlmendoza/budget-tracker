@@ -1,44 +1,44 @@
-import { BudgetListType, BudgetType } from "@/app/api/budget/schema";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { BudgetListType, BudgetType } from "@/app/api/budget/schema"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import {
   AlertTriangle,
   Calendar,
   CircleCheckBig,
   Edit,
   Trash2,
-} from "lucide-react";
-import React, { useState } from "react";
-import { format } from "date-fns";
-import { Progress } from "@/components/ui/progress";
-import UpdateBudgetModal from "./modal/UpdateBudgetModal";
-import DeleteBudgetModal from "./modal/DeleteBudgetModal";
+} from "lucide-react"
+import React, { useState } from "react"
+import { format } from "date-fns"
+import { Progress } from "@/components/ui/progress"
+import UpdateBudgetModal from "./modal/UpdateBudgetModal"
+import DeleteBudgetModal from "./modal/DeleteBudgetModal"
 
 const BudgetList = ({ budgets }: BudgetListType) => {
-  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [currentBudget, setCurrentBudget] = useState<BudgetType | null>(null);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false)
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const [currentBudget, setCurrentBudget] = useState<BudgetType | null>(null)
 
   const handleOpenUpdateModal = (budget: BudgetType) => {
-    console.log(budget);
-    setCurrentBudget(budget);
-    setIsUpdateModalOpen(true);
-  };
+    console.log(budget)
+    setCurrentBudget(budget)
+    setIsUpdateModalOpen(true)
+  }
 
   const handleCloseUpdateModal = () => {
-    setIsUpdateModalOpen(false);
-    setCurrentBudget(null);
-  };
+    setIsUpdateModalOpen(false)
+    setCurrentBudget(null)
+  }
 
   const handleOpenDeleteModal = (budget: BudgetType) => {
-    setCurrentBudget(budget);
-    setIsDeleteModalOpen(true);
-  };
+    setCurrentBudget(budget)
+    setIsDeleteModalOpen(true)
+  }
 
   const handleCloseDeleteModal = () => {
-    setIsDeleteModalOpen(false);
-    setCurrentBudget(null);
-  };
+    setIsDeleteModalOpen(false)
+    setCurrentBudget(null)
+  }
 
   return (
     <div className="grid gap-6">
@@ -51,10 +51,10 @@ const BudgetList = ({ budgets }: BudgetListType) => {
         </CardHeader>
         <CardContent className="space-y-6">
           {budgets.map((budget) => {
-            const spent = budget.spent || 0; // Default to 0 if spent is undefined
-            const budgeted = budget.amount || 0; // Default to 0 if budgeted is undefined
-            const percentage = Math.min((spent / budgeted) * 100, 100);
-            const isOverBudget = spent > budgeted;
+            const spent = budget.spent || 0 // Default to 0 if spent is undefined
+            const budgeted = budget.amount || 0 // Default to 0 if budgeted is undefined
+            const percentage = Math.min((spent / budgeted) * 100, 100)
+            const isOverBudget = spent > budgeted
 
             return (
               <div key={budget._id} className="space-y-3">
@@ -124,7 +124,7 @@ const BudgetList = ({ budgets }: BudgetListType) => {
                   )}
                 </div>
               </div>
-            );
+            )
           })}
         </CardContent>
         {budgets.length === 0 && (
@@ -152,7 +152,7 @@ const BudgetList = ({ budgets }: BudgetListType) => {
         )}
       </Card>
     </div>
-  );
-};
+  )
+}
 
-export default BudgetList;
+export default BudgetList

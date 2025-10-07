@@ -1,6 +1,6 @@
-"use client";
-import Link from "next/link";
-import ProfileLetter from "../(dashboard)/profile/page";
+"use client"
+import Link from "next/link"
+import ProfileLetter from "../(dashboard)/profile/page"
 
 const Topbar: React.FC = () => {
 
@@ -18,7 +18,7 @@ const Topbar: React.FC = () => {
         <ProfileLetter/>
       </div>
     </nav>
-  );
-};
+  )
+}
 
-export default Topbar;
+export default Topbar

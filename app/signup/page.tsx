@@ -1,6 +1,6 @@
-"use client";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+"use client"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
 import {
   Form,
   FormField,
@@ -8,15 +8,15 @@ import {
   FormLabel,
   FormControl,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { useContext } from "react";
-import { useRouter } from "next/navigation";
-import { AuthContext } from "../context/AuthContext";
-import LoadingOverlay from "../layout/LoadingOverlay";
-import { SignUpFormValues, signUpSchema } from "../api/auth/schema";
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import Link from "next/link"
+import { useContext } from "react"
+import { useRouter } from "next/navigation"
+import { AuthContext } from "../context/AuthContext"
+import LoadingOverlay from "../layout/LoadingOverlay"
+import { SignUpFormValues, signUpSchema } from "../api/auth/schema"
 
 export default function SignUp() {
   const form = useForm<SignUpFormValues>({
@@ -26,16 +26,16 @@ export default function SignUp() {
       email: "",
       password: "",
     },
-  });
+  })
 
-  const authContext = useContext(AuthContext);
-  const router = useRouter();
+  const authContext = useContext(AuthContext)
+  const router = useRouter()
 
   if (!authContext) {
-    throw new Error("SignUp must be used within an AuthProvider");
+    throw new Error("SignUp must be used within an AuthProvider")
   }
 
-  const { loading, signup } = authContext;
+  const { loading, signup } = authContext
 
   const onSubmit = async (data: SignUpFormValues) => {
     try {
@@ -43,14 +43,14 @@ export default function SignUp() {
         username: data.name,
         email: data.email,
         password: data.password,
-      });
-      router.push("/login");
+      })
+      router.push("/login")
     } catch (error) {
-      console.error("SignUp failed:", error);
+      console.error("SignUp failed:", error)
     }
-  };
+  }
 
-  if (loading) return <LoadingOverlay />;
+  if (loading) return <LoadingOverlay />
 
   return (
     <div className="flex flex-col md:flex-row h-screen bg-background w-full">
@@ -126,5 +126,5 @@ export default function SignUp() {
         </span>
       </section>
     </div>
-  );
+  )
 }

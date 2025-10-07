@@ -1,9 +1,9 @@
-import React from "react";
+import React from "react"
 
 interface FeatureCardProps {
-  icon?: React.ReactNode;
-  title: string;
-  description: string;
+  icon?: React.ReactNode
+  title: string
+  description: string
 }
 
 const FeatureCard: React.FC<FeatureCardProps> = ({
@@ -21,6 +21,6 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
 
     <p className="mt-2 text-gray-700">{description}</p>
   </div>
-);
+)
 
-export default FeatureCard;
+export default FeatureCard

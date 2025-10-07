@@ -1,48 +1,48 @@
-"use client";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { IncomeExpenseChart } from "./IncomeExpenseChart";
-import { SpendingChart } from "./SpendingChart";
-import RecentTransactionList from "./RecentTransactionList";
-import DashboardOverview from "./DashboardOverview";
-import { useEffect, useState } from "react";
-import { getAllTransactions } from "@/app/api/transaction";
-import { useAuth } from "@/app/context/AuthContext";
-import { useAtom } from "jotai";
-import { transactionsListAtom } from "@/app/store/atom";
-import { Plus } from "lucide-react";
-import AddTransactionModal from "../transactions/modal/AddTransactionModal";
+"use client"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { IncomeExpenseChart } from "./IncomeExpenseChart"
+import { SpendingChart } from "./SpendingChart"
+import RecentTransactionList from "./RecentTransactionList"
+import DashboardOverview from "./DashboardOverview"
+import { useEffect, useState } from "react"
+import { getAllTransactions } from "@/app/api/transaction"
+import { useAuth } from "@/app/context/AuthContext"
+import { useAtom } from "jotai"
+import { transactionsListAtom } from "@/app/store/atom"
+import { Plus } from "lucide-react"
+import AddTransactionModal from "../transactions/modal/AddTransactionModal"
 
 export default function Dashboard() {
-  const { user } = useAuth();
-  const [transactions, setTransactions] = useAtom(transactionsListAtom);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { user } = useAuth()
+  const [transactions, setTransactions] = useAtom(transactionsListAtom)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   useEffect(() => {
     const fetchData = async () => {
       if (!user) {
-        console.error("User not found in local storage");
-        return;
+        console.error("User not found in local storage")
+        return
       }
 
       try {
-        const fetchedTransactions = await getAllTransactions(user.id);
-        setTransactions(fetchedTransactions);
+        const fetchedTransactions = await getAllTransactions(user.id)
+        setTransactions(fetchedTransactions)
       } catch (error) {
-        console.error("Error fetching transactions:", error);
+        console.error("Error fetching transactions:", error)
       }
-    };
+    }
 
-    fetchData();
-  }, [transactions, setTransactions, user]);
+    fetchData()
+  }, [transactions, setTransactions, user])
 
   const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
+    setIsModalOpen(true)
+  }
 
   const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
+    setIsModalOpen(false)
+  }
 
   return (
     <div className="h-screen bg-background w-full">
@@ -139,5 +139,5 @@ export default function Dashboard() {
         />
       </div>
     </div>
-  );
+  )
 }

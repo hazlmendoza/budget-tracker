@@ -1,11 +1,11 @@
-"use client";
-import { AuthProvider } from "./context/AuthContext";
-import "./globals.css";
+"use client"
+import { AuthProvider } from "./context/AuthContext"
+import "./globals.css"
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
     <AuthProvider>
@@ -25,5 +25,5 @@ export default function RootLayout({
         </body>
       </html>
     </AuthProvider>
-  );
+  )
 }

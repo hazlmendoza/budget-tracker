@@ -1,14 +1,14 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button"
 
-import { useAuth } from "@/app/context/AuthContext";
-import { BudgetType } from "@/app/api/budget/schema";
-import { deleteBudget } from "@/app/api/budget";
-import { toast } from "sonner";
+import { useAuth } from "@/app/context/AuthContext"
+import { BudgetType } from "@/app/api/budget/schema"
+import { deleteBudget } from "@/app/api/budget"
+import { toast } from "sonner"
 
 interface DeleteBudgetModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  budget: BudgetType;
+  isOpen: boolean
+  onClose: () => void
+  budget: BudgetType
 }
 
 const DeleteBudgetModal: React.FC<DeleteBudgetModalProps> = ({
@@ -16,31 +16,31 @@ const DeleteBudgetModal: React.FC<DeleteBudgetModalProps> = ({
   onClose,
   budget,
 }) => {
-  const { user } = useAuth();
+  const { user } = useAuth()
 
   const handleDelete = async () => {
     try {
       if (!user?.id) {
-        throw new Error("User ID is not available.");
+        throw new Error("User ID is not available.")
       }
       if (!budget._id) {
-        throw new Error("Budget ID is not available.");
+        throw new Error("Budget ID is not available.")
       }
 
-      await deleteBudget(budget._id);
+      await deleteBudget(budget._id)
       toast.success("Budget Deleted!", {
         description: "Your budget has been successfully deleted.",
-      });
-      onClose();
+      })
+      onClose()
     } catch (error) {
       toast.error("Budget Failed!", {
         description: "Something went wrong while deleting your budget.",
-      });
-      console.log(error);
+      })
+      console.log(error)
     }
-  };
+  }
 
-  if (!isOpen) return null;
+  if (!isOpen) return null
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
@@ -61,7 +61,7 @@ const DeleteBudgetModal: React.FC<DeleteBudgetModalProps> = ({
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default DeleteBudgetModal;
+export default DeleteBudgetModal

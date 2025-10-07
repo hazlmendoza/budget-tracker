@@ -1,42 +1,42 @@
-"use client";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowDownLeft, ArrowUpRight, Edit, Trash2 } from "lucide-react";
-import { useState } from "react";
-import UpdateTransactionModal from "./modal/UpdateTransactionModal";
+"use client"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { ArrowDownLeft, ArrowUpRight, Edit, Trash2 } from "lucide-react"
+import { useState } from "react"
+import UpdateTransactionModal from "./modal/UpdateTransactionModal"
 import {
   TransactionListType,
   TransactionType,
-} from "@/app/api/transaction/schema";
-import DeleteTransactionModal from "./modal/DeleteTransactionModal";
-import { format } from "date-fns";
+} from "@/app/api/transaction/schema"
+import DeleteTransactionModal from "./modal/DeleteTransactionModal"
+import { format } from "date-fns"
 
 const TransactionList = ({ transactions }: TransactionListType) => {
-  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false)
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [currentTransaction, setCurrentTransaction] =
-    useState<TransactionType | null>(null);
+    useState<TransactionType | null>(null)
 
   const handleOpenUpdateModal = (transaction: TransactionType) => {
-    setCurrentTransaction(transaction);
-    setIsUpdateModalOpen(true);
-  };
+    setCurrentTransaction(transaction)
+    setIsUpdateModalOpen(true)
+  }
 
   const handleCloseUpdateModal = () => {
-    setIsUpdateModalOpen(false);
-    setCurrentTransaction(null);
-  };
+    setIsUpdateModalOpen(false)
+    setCurrentTransaction(null)
+  }
 
   const handleOpenDeleteModal = (transaction: TransactionType) => {
-    setCurrentTransaction(transaction);
-    setIsDeleteModalOpen(true);
-  };
+    setCurrentTransaction(transaction)
+    setIsDeleteModalOpen(true)
+  }
 
   const handleCloseDeleteModal = () => {
-    setIsDeleteModalOpen(false);
-    setCurrentTransaction(null);
-  };
+    setIsDeleteModalOpen(false)
+    setCurrentTransaction(null)
+  }
 
   return (
     <Card className="card-elevated">
@@ -146,7 +146,7 @@ const TransactionList = ({ transactions }: TransactionListType) => {
         />
       )}
     </Card>
-  );
-};
+  )
+}
 
-export default TransactionList;
+export default TransactionList

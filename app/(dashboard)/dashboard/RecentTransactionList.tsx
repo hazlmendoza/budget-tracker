@@ -1,13 +1,13 @@
-import { TransactionListType } from "@/app/api/transaction/schema";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { format } from "date-fns";
-import { ArrowDownLeft, ArrowUpRight, Eye } from "lucide-react";
-import Link from "next/link";
-import React from "react";
+import { TransactionListType } from "@/app/api/transaction/schema"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { format } from "date-fns"
+import { ArrowDownLeft, ArrowUpRight, Eye } from "lucide-react"
+import Link from "next/link"
+import React from "react"
 
 const RecentTransactionList = ({ transactions }: TransactionListType) => {
-  const recentTransactions = transactions.slice(0, 5);
+  const recentTransactions = transactions.slice(0, 5)
   return (
     <Card className="card-elevated">
       <CardHeader className="flex flex-row items-center justify-between">
@@ -86,7 +86,7 @@ const RecentTransactionList = ({ transactions }: TransactionListType) => {
           </div>
         )}
     </Card>
-  );
-};
+  )
+}
 
-export default RecentTransactionList;
+export default RecentTransactionList

@@ -1,6 +1,6 @@
-"use client";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+"use client"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
 import {
   Form,
   FormField,
@@ -8,15 +8,15 @@ import {
   FormLabel,
   FormControl,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { useContext } from "react";
-import { useRouter } from "next/navigation";
-import { AuthContext } from "../context/AuthContext";
-import LoadingOverlay from "../layout/LoadingOverlay";
-import { LogInFormValues, logInSchema } from "../api/auth/schema";
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import Link from "next/link"
+import { useContext } from "react"
+import { useRouter } from "next/navigation"
+import { AuthContext } from "../context/AuthContext"
+import LoadingOverlay from "../layout/LoadingOverlay"
+import { LogInFormValues, logInSchema } from "../api/auth/schema"
 
 export default function LogIn() {
   const form = useForm<LogInFormValues>({
@@ -25,27 +25,27 @@ export default function LogIn() {
       email: "",
       password: "",
     },
-  });
+  })
 
-  const authContext = useContext(AuthContext);
-  const router = useRouter();
+  const authContext = useContext(AuthContext)
+  const router = useRouter()
 
   if (!authContext) {
-    throw new Error("LogIn must be used within an AuthProvider");
+    throw new Error("LogIn must be used within an AuthProvider")
   }
 
-  const { loading, login } = authContext;
+  const { loading, login } = authContext
 
   const onSubmit = async (data: LogInFormValues) => {
     try {
-      await login({ email: data.email, password: data.password });
-      router.push("/dashboard");
+      await login({ email: data.email, password: data.password })
+      router.push("/dashboard")
     } catch (error) {
-      console.error("Login failed:", error);
+      console.error("Login failed:", error)
     }
-  };
+  }
 
-  if (loading) return <LoadingOverlay />;
+  if (loading) return <LoadingOverlay />
 
   return (
     <div className="flex flex-col md:flex-row h-screen bg-background w-full">
@@ -108,5 +108,5 @@ export default function LogIn() {
         </span>
       </section>
     </div>
-  );
+  )
 }

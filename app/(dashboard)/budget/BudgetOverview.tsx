@@ -1,18 +1,18 @@
-import { BudgetListType } from "@/app/api/budget/schema";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { TrendingUp } from "lucide-react";
+import { BudgetListType } from "@/app/api/budget/schema"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { TrendingUp } from "lucide-react"
 
 const BudgetOverview = ({ budgets }: BudgetListType) => {
-  const totalBudget = budgets.reduce((acc, budget) => acc + budget.amount, 0);
+  const totalBudget = budgets.reduce((acc, budget) => acc + budget.amount, 0)
   const totalSpent = budgets.reduce(
     (acc, budget) => acc + (budget.spent || 0),
     0
-  );
+  )
 
   // Avoid division by zero
   const budgetedPercent =
-    totalBudget > 0 ? ((totalSpent / totalBudget) * 100).toFixed(1) : 0;
-  const remainingBudget = totalBudget - totalSpent;
+    totalBudget > 0 ? ((totalSpent / totalBudget) * 100).toFixed(1) : 0
+  const remainingBudget = totalBudget - totalSpent
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -72,7 +72,7 @@ const BudgetOverview = ({ budgets }: BudgetListType) => {
         </CardContent>
       </Card>
     </div>
-  );
-};
+  )
+}
 
-export default BudgetOverview;
+export default BudgetOverview

@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button"
 import {
   Form,
   FormField,
@@ -6,29 +6,29 @@ import {
   FormLabel,
   FormControl,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
 import {
   transactionSchema,
   TransactionType,
-} from "@/app/api/transaction/schema";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+} from "@/app/api/transaction/schema"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { updateTransaction } from "@/app/api/transaction";
-import { useAuth } from "@/app/context/AuthContext";
-import { toast } from "sonner";
+} from "@/components/ui/select"
+import { updateTransaction } from "@/app/api/transaction"
+import { useAuth } from "@/app/context/AuthContext"
+import { toast } from "sonner"
 
 interface UpdateTransactionModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  transaction: TransactionType;
+  isOpen: boolean
+  onClose: () => void
+  transaction: TransactionType
 }
 
 const UpdateTransactionModal: React.FC<UpdateTransactionModalProps> = ({
@@ -36,7 +36,7 @@ const UpdateTransactionModal: React.FC<UpdateTransactionModalProps> = ({
   onClose,
   transaction,
 }) => {
-  const { user } = useAuth();
+  const { user } = useAuth()
   const form = useForm<TransactionType>({
     resolver: zodResolver(transactionSchema),
     defaultValues: {
@@ -47,15 +47,15 @@ const UpdateTransactionModal: React.FC<UpdateTransactionModalProps> = ({
       categoryName: transaction.categoryId?.name,
       userId: user?.id,
     },
-  });
+  })
 
   const onSubmit = async (values: TransactionType) => {
     try {
       if (!user?.id) {
-        throw new Error("User ID is not available.");
+        throw new Error("User ID is not available.")
       }
       if (!transaction._id) {
-        throw new Error("Transaction ID is not available.");
+        throw new Error("Transaction ID is not available.")
       }
       const formattedValues = {
         date: values.date ? new Date(values.date) : new Date(),
@@ -64,22 +64,22 @@ const UpdateTransactionModal: React.FC<UpdateTransactionModalProps> = ({
         description: values.description,
         userId: user.id,
         categoryName: values.categoryName,
-      };
+      }
 
-      await updateTransaction(transaction._id, formattedValues);
+      await updateTransaction(transaction._id, formattedValues)
       toast.success("Transaction Updated!", {
         description: "Your transaction has been successfully updated.",
       })
-      onClose();
+      onClose()
     } catch (error) {
       toast.error("Transaction Failed!", {
         description: "Something went wrong while updating your transaction.",
       })
-      console.log(error);
+      console.log(error)
     }
-  };
+  }
 
-  if (!isOpen) return null;
+  if (!isOpen) return null
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
@@ -143,8 +143,8 @@ const UpdateTransactionModal: React.FC<UpdateTransactionModalProps> = ({
                             : ""
                         }
                         onChange={(e) => {
-                          const value = e.target.value;
-                          field.onChange(value ? new Date(value) : undefined);
+                          const value = e.target.value
+                          field.onChange(value ? new Date(value) : undefined)
                         }}
                         onBlur={field.onBlur}
                         name={field.name}
@@ -201,7 +201,7 @@ const UpdateTransactionModal: React.FC<UpdateTransactionModalProps> = ({
         </Form>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default UpdateTransactionModal;
+export default UpdateTransactionModal

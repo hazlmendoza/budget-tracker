@@ -1,6 +1,6 @@
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import React from "react";
+import { Button } from "@/components/ui/button"
+import Link from "next/link"
+import React from "react"
 
 const Topbar: React.FC = () => {
   return (
@@ -24,7 +24,7 @@ const Topbar: React.FC = () => {
         </Button>
       </div>
     </nav>
-  );
-};
+  )
+}
 
-export default Topbar;
+export default Topbar

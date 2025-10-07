@@ -1,23 +1,23 @@
-import { GoalListType } from "@/app/api/goals/schema";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Target, TrendingUp, Trophy } from "lucide-react";
+import { GoalListType } from "@/app/api/goals/schema"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Target, TrendingUp, Trophy } from "lucide-react"
 
 const GoalsOverview = ({ goals }: GoalListType) => {
   const totalTargetAmount = goals.reduce(
     (acc, goal) => acc + goal.targetAmount,
     0
-  );
+  )
   const totalCurrentAmount = goals.reduce(
     (acc, goal) => acc + (goal.currentAmount || 0),
     0
-  );
+  )
   const completionRate =
     totalTargetAmount > 0
       ? ((totalCurrentAmount / totalTargetAmount) * 100).toFixed(1)
-      : 0;
+      : 0
   const completedGoals = goals.filter(
     (goal) => (goal.currentAmount || 0) >= goal.targetAmount
-  ).length;
+  ).length
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -70,7 +70,7 @@ const GoalsOverview = ({ goals }: GoalListType) => {
         </CardContent>
       </Card>
     </div>
-  );
-};
+  )
+}
 
-export default GoalsOverview;
+export default GoalsOverview

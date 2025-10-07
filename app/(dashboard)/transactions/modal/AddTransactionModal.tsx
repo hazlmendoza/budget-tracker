@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button"
 import {
   Form,
   FormField,
@@ -6,35 +6,35 @@ import {
   FormLabel,
   FormControl,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
 import {
   transactionSchema,
   TransactionType,
-} from "@/app/api/transaction/schema";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+} from "@/app/api/transaction/schema"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { addTransaction } from "@/app/api/transaction";
-import { useAuth } from "@/app/context/AuthContext";
-import { toast } from "sonner";
+} from "@/components/ui/select"
+import { addTransaction } from "@/app/api/transaction"
+import { useAuth } from "@/app/context/AuthContext"
+import { toast } from "sonner"
 
 interface AddTransactionModalProps {
-  isOpen: boolean;
-  onClose: () => void;
+  isOpen: boolean
+  onClose: () => void
 }
 
 const AddTransactionModal: React.FC<AddTransactionModalProps> = ({
   isOpen,
   onClose,
 }) => {
-  const { user } = useAuth();
+  const { user } = useAuth()
   const form = useForm<TransactionType>({
     resolver: zodResolver(transactionSchema),
     defaultValues: {
@@ -45,13 +45,13 @@ const AddTransactionModal: React.FC<AddTransactionModalProps> = ({
       categoryName: "",
       userId: user?.id || "",
     },
-  });
+  })
 
   const onSubmit = async (values: TransactionType) => {
-    console.log("Form submitted", values);
+    console.log("Form submitted", values)
     try {
       if (!user?.id) {
-        throw new Error("User ID is not available.");
+        throw new Error("User ID is not available.")
       }
       const formattedValues = {
         date: values.date ? new Date(values.date) : new Date(),
@@ -60,23 +60,23 @@ const AddTransactionModal: React.FC<AddTransactionModalProps> = ({
         description: values.description,
         userId: user.id,
         categoryName: values.categoryName,
-      };
+      }
 
-      await addTransaction(formattedValues);
-      console.log("Sending request with values:", formattedValues);
+      await addTransaction(formattedValues)
+      console.log("Sending request with values:", formattedValues)
       toast.success("Transaction Created!", {
         description: "Your transaction has been successfully added.",
-      });
-      onClose();
+      })
+      onClose()
     } catch (error) {
       toast.error("Transaction Failed!", {
         description: "Something went wrong while adding your transaction.",
-      });
-      console.log(error);
+      })
+      console.log(error)
     }
-  };
+  }
 
-  if (!isOpen) return null;
+  if (!isOpen) return null
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
@@ -140,8 +140,8 @@ const AddTransactionModal: React.FC<AddTransactionModalProps> = ({
                             : ""
                         }
                         onChange={(e) => {
-                          const value = e.target.value;
-                          field.onChange(value ? new Date(value) : undefined);
+                          const value = e.target.value
+                          field.onChange(value ? new Date(value) : undefined)
                         }}
                         onBlur={field.onBlur}
                         name={field.name}
@@ -198,7 +198,7 @@ const AddTransactionModal: React.FC<AddTransactionModalProps> = ({
         </Form>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default AddTransactionModal;
+export default AddTransactionModal

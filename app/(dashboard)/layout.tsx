@@ -1,14 +1,14 @@
-import Sidebar from "../layout/SideBar";
-import Topbar from "../layout/TopBar";
-import { Toaster } from "@/components/ui/sonner";
+import Sidebar from "../layout/SideBar"
+import Topbar from "../layout/TopBar"
+import { Toaster } from "@/components/ui/sonner"
 
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { CircleCheck, CircleX, Info, Loader, TriangleAlert } from "lucide-react";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
+import { CircleCheck, CircleX, Info, Loader, TriangleAlert } from "lucide-react"
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
     <div>
@@ -39,7 +39,7 @@ export default function RootLayout({
         </div>
       </SidebarProvider>
     </div>
-  );
+  )
 }
 
 // export default function RootLayout({

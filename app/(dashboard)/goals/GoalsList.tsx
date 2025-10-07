@@ -1,54 +1,54 @@
-"use client";
-import { GoalListType, GoalType } from "@/app/api/goals/schema";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
-import { format } from "date-fns";
-import { Calendar, Edit, Trash2 } from "lucide-react";
-import React, { useState } from "react";
-import UpdateGoalModal from "./modal/UpdateGoalModal";
-import DeleteGoalModal from "./modal/DeleteGoalModal";
+"use client"
+import { GoalListType, GoalType } from "@/app/api/goals/schema"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Progress } from "@/components/ui/progress"
+import { format } from "date-fns"
+import { Calendar, Edit, Trash2 } from "lucide-react"
+import React, { useState } from "react"
+import UpdateGoalModal from "./modal/UpdateGoalModal"
+import DeleteGoalModal from "./modal/DeleteGoalModal"
 
 const GoalsList = ({ goals }: GoalListType) => {
-  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [currentGoal, setCurrentGoal] = useState<GoalType | null>(null);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false)
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const [currentGoal, setCurrentGoal] = useState<GoalType | null>(null)
 
   const getDaysRemaining = (dueDate: string | Date): number => {
-    const today = new Date();
-    const due = new Date(dueDate);
+    const today = new Date()
+    const due = new Date(dueDate)
     if (isNaN(due.getTime())) {
-      throw new Error("Invalid due date");
+      throw new Error("Invalid due date")
     }
 
     // Calculate the difference in milliseconds
-    const difference = due.getTime() - today.getTime();
+    const difference = due.getTime() - today.getTime()
     // Convert milliseconds to days
-    const daysRemaining = Math.ceil(difference / (1000 * 60 * 60 * 24));
+    const daysRemaining = Math.ceil(difference / (1000 * 60 * 60 * 24))
 
-    return daysRemaining;
-  };
+    return daysRemaining
+  }
 
   const handleOpenUpdateModal = (goal: GoalType) => {
-    console.log(goal);
-    setCurrentGoal(goal);
-    setIsUpdateModalOpen(true);
-  };
+    console.log(goal)
+    setCurrentGoal(goal)
+    setIsUpdateModalOpen(true)
+  }
 
   const handleCloseUpdateModal = () => {
-    setIsUpdateModalOpen(false);
-    setCurrentGoal(null);
-  };
+    setIsUpdateModalOpen(false)
+    setCurrentGoal(null)
+  }
 
   const handleOpenDeleteModal = (goal: GoalType) => {
-    setCurrentGoal(goal);
-    setIsDeleteModalOpen(true);
-  };
+    setCurrentGoal(goal)
+    setIsDeleteModalOpen(true)
+  }
 
   const handleCloseDeleteModal = () => {
-    setIsDeleteModalOpen(false);
-    setCurrentGoal(null);
-  };
+    setIsDeleteModalOpen(false)
+    setCurrentGoal(null)
+  }
   return (
     <div className="grid gap-6">
       <Card className="card-elevated">
@@ -63,10 +63,10 @@ const GoalsList = ({ goals }: GoalListType) => {
             const percentage = Math.min(
               ((goal.currentAmount || 0) / goal.targetAmount) * 100,
               100
-            );
-            const daysRemaining = getDaysRemaining(goal.dueDate);
-            const isComplete = (goal.currentAmount || 0) >= goal.targetAmount;
-            const remaining = goal.targetAmount - (goal.currentAmount || 0);
+            )
+            const daysRemaining = getDaysRemaining(goal.dueDate)
+            const isComplete = (goal.currentAmount || 0) >= goal.targetAmount
+            const remaining = goal.targetAmount - (goal.currentAmount || 0)
 
             return (
               <div
@@ -137,7 +137,7 @@ const GoalsList = ({ goals }: GoalListType) => {
                   <Progress value={percentage} className="h-3" />
                 </div>
               </div>
-            );
+            )
           })}
           {goals.length === 0 && (
             <div className="text-center py-12">
@@ -164,7 +164,7 @@ const GoalsList = ({ goals }: GoalListType) => {
         )}
       </Card>
     </div>
-  );
-};
+  )
+}
 
-export default GoalsList;
+export default GoalsList

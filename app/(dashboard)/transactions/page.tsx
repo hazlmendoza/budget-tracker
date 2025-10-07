@@ -1,46 +1,46 @@
-"use client";
-import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
-import TransactionList from "./TransactionList";
-import { useAtom } from "jotai";
-import { transactionsListAtom } from "../../store/atom";
-import { useEffect, useState } from "react";
-import { getAllTransactions } from "../../api/transaction";
-import AddTransactionModal from "./modal/AddTransactionModal";
-import { useAuth } from "@/app/context/AuthContext";
+"use client"
+import { Button } from "@/components/ui/button"
+import { Plus } from "lucide-react"
+import TransactionList from "./TransactionList"
+import { useAtom } from "jotai"
+import { transactionsListAtom } from "../../store/atom"
+import { useEffect, useState } from "react"
+import { getAllTransactions } from "../../api/transaction"
+import AddTransactionModal from "./modal/AddTransactionModal"
+import { useAuth } from "@/app/context/AuthContext"
 
 
 
 export default function Transactions() {
-  const { user } = useAuth();
-  const [transactions, setTransactions] = useAtom(transactionsListAtom);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { user } = useAuth()
+  const [transactions, setTransactions] = useAtom(transactionsListAtom)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   useEffect(() => {
     const fetchData = async () => {
       if (!user) {
-        console.error("User not found in local storage");
-        return;
+        console.error("User not found in local storage")
+        return
       }
 
       try {
-        const fetchedTransactions = await getAllTransactions(user.id);
-        setTransactions(fetchedTransactions);
+        const fetchedTransactions = await getAllTransactions(user.id)
+        setTransactions(fetchedTransactions)
       } catch (error) {
-        console.error("Error fetching transactions:", error);
+        console.error("Error fetching transactions:", error)
       }
-    };
+    }
 
-    fetchData();
-  }, [transactions, setTransactions, user]);
+    fetchData()
+  }, [transactions, setTransactions, user])
 
   const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
+    setIsModalOpen(true)
+  }
 
   const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
+    setIsModalOpen(false)
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -82,5 +82,5 @@ export default function Transactions() {
         } />
       </div>
     </div>
-  );
+  )
 }

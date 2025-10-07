@@ -1,45 +1,45 @@
 'use client'
-import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
-import GoalsOverview from "./GoalsOverview";
-import GoalsList from "./GoalsList";
-import { useAuth } from "@/app/context/AuthContext";
-import { useAtom } from "jotai";
-import { useEffect, useState } from "react";
-import { getAllGoals } from "@/app/api/goals";
-import AddGoalModal from "./modal/AddGoalModal";
-import { goalsListAtom } from "@/app/store/atom";
+import { Button } from "@/components/ui/button"
+import { Plus } from "lucide-react"
+import GoalsOverview from "./GoalsOverview"
+import GoalsList from "./GoalsList"
+import { useAuth } from "@/app/context/AuthContext"
+import { useAtom } from "jotai"
+import { useEffect, useState } from "react"
+import { getAllGoals } from "@/app/api/goals"
+import AddGoalModal from "./modal/AddGoalModal"
+import { goalsListAtom } from "@/app/store/atom"
 
 export default function Goals() {
-  const { user } = useAuth();
-  const [goals, setGoals] = useAtom(goalsListAtom);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { user } = useAuth()
+  const [goals, setGoals] = useAtom(goalsListAtom)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   useEffect(() => {
     const fetchData = async () => {
       if (!user) {
-        console.error("User not found in local storage");
-        return;
+        console.error("User not found in local storage")
+        return
       }
 
       try {
-        const goals = await getAllGoals(user.id);
-        setGoals(goals);
+        const goals = await getAllGoals(user.id)
+        setGoals(goals)
       } catch (error) {
-        console.error("Error fetching transactions:", error);
+        console.error("Error fetching transactions:", error)
       }
-    };
+    }
 
-    fetchData();
-  }, [goals, setGoals, user]);
+    fetchData()
+  }, [goals, setGoals, user])
 
   const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
+    setIsModalOpen(true)
+  }
 
   const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
+    setIsModalOpen(false)
+  }
 
   return (
     <div className="min-h-screen bg-background">

@@ -1,13 +1,13 @@
-import { Button } from "@/components/ui/button";
-import { TransactionType } from "@/app/api/transaction/schema";
-import { deleteTransaction } from "@/app/api/transaction";
-import { useAuth } from "@/app/context/AuthContext";
-import { toast } from "sonner";
+import { Button } from "@/components/ui/button"
+import { TransactionType } from "@/app/api/transaction/schema"
+import { deleteTransaction } from "@/app/api/transaction"
+import { useAuth } from "@/app/context/AuthContext"
+import { toast } from "sonner"
 
 interface DeleteTransactionModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  transaction: TransactionType;
+  isOpen: boolean
+  onClose: () => void
+  transaction: TransactionType
 }
 
 const DeleteTransactionModal: React.FC<DeleteTransactionModalProps> = ({
@@ -15,18 +15,18 @@ const DeleteTransactionModal: React.FC<DeleteTransactionModalProps> = ({
   onClose,
   transaction,
 }) => {
-  const { user } = useAuth();
+  const { user } = useAuth()
 
   const handleDelete = async () => {
     try {
       if (!user?.id) {
-        throw new Error("User ID is not available.");
+        throw new Error("User ID is not available.")
       }
       if (!transaction._id) {
-        throw new Error("Transaction ID is not available.");
+        throw new Error("Transaction ID is not available.")
       }
 
-      await deleteTransaction(transaction._id);
+      await deleteTransaction(transaction._id)
       toast.success("Transaction Deleted!", {
         description: "Your transaction has been successfully deleted.",
       })
@@ -37,9 +37,9 @@ const DeleteTransactionModal: React.FC<DeleteTransactionModalProps> = ({
       })
       console.log(error)
     }
-  };
+  }
 
-  if (!isOpen) return null;
+  if (!isOpen) return null
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
@@ -59,7 +59,7 @@ const DeleteTransactionModal: React.FC<DeleteTransactionModalProps> = ({
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default DeleteTransactionModal;
+export default DeleteTransactionModal
