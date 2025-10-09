@@ -7,6 +7,7 @@ A modern and intuitive budget tracking application designed to help you manage y
 [![Stars](https://img.shields.io/github/stars/hazlmendoza/budget-tracker?style=social)](https://github.com/hazlmendoza/budget-tracker/stargazers)
 [![Forks](https://img.shields.io/github/forks/hazlmendoza/budget-tracker?style=social)](https://github.com/hazlmendoza/budget-tracker/network/members)
 
+Live Demo: https://budget-tracker-pi-five.vercel.app/
 
 ## ✨ Features
 
