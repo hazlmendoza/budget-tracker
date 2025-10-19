@@ -65,9 +65,8 @@ export default function SignUp() {
   if (loading) return <LoadingOverlay />
 
   return (
-    <div className='flex flex-col md:flex-row h-screen bg-background w-full'>
-      <div className='w-full md:w-1/2 flex justify-center items-center bg-gradient-to-tr from-blue-950 via-purple-900 to-pink-900 text-white rounded-b-3xl md:rounded-r-3xl md:rounded-b-none'></div>
-      <section className='flex flex-col justify-center items-center mx-auto my-10 p-6 w-full max-w-md bg-surface-1 rounded-lg shadow-lg'>
+    <div className='flex flex-col md:flex-row h-screen bg-blend-screen w-full'>
+       <section className='flex flex-col justify-center items-center mx-auto p-6 w-full max-w-md bg-surface-1 rounded-lg shadow-lg my-auto'>
         <h1 className='text-3xl font-semibold my-4'>Hi there!</h1>{' '}
         <p className='text-md mb-6 text-center'>
           Please create an account to continue
@@ -80,7 +79,7 @@ export default function SignUp() {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className='space-y-8 min-w-[400px]'
+            className='space-y-8 w-full'
           >
             {/* Email Field */}
             <FormField
