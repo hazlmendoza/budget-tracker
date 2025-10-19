@@ -1,7 +1,6 @@
 import { z } from 'zod'
-import { categorySchema } from '../category/schema';
-import { atom } from 'jotai';
-
+import { categorySchema } from '../category/schema'
+import { atom } from 'jotai'
 
 export const transactionSchema = z.object({
     _id: z.string().optional(),
@@ -12,7 +11,7 @@ export const transactionSchema = z.object({
     categoryName: z.string().optional(),
     categoryId: categorySchema.optional(),
     userId: z.string()
-});
+})
 
 export const transactionListSchema = z.object({
     transactions: z.array(transactionSchema)
@@ -20,4 +19,4 @@ export const transactionListSchema = z.object({
 
 export type TransactionType = z.infer<typeof transactionSchema>
 export type TransactionListType = z.infer<typeof transactionListSchema>
-export const transactionsListAtom = atom<{ transactions: TransactionType[] }>({ transactions: [] });
+export const transactionsListAtom = atom<{ transactions: TransactionType[] }>({ transactions: [] })

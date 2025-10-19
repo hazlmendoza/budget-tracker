@@ -48,7 +48,6 @@ const AddTransactionModal: React.FC<AddTransactionModalProps> = ({
   })
 
   const onSubmit = async (values: TransactionType) => {
-    console.log("Form submitted", values)
     try {
       if (!user?.id) {
         throw new Error("User ID is not available.")
@@ -63,7 +62,6 @@ const AddTransactionModal: React.FC<AddTransactionModalProps> = ({
       }
 
       await addTransaction(formattedValues)
-      console.log("Sending request with values:", formattedValues)
       toast.success("Transaction Created!", {
         description: "Your transaction has been successfully added.",
       })

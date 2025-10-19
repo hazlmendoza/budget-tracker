@@ -20,7 +20,6 @@ const BudgetList = ({ budgets }: BudgetListType) => {
   const [currentBudget, setCurrentBudget] = useState<BudgetType | null>(null)
 
   const handleOpenUpdateModal = (budget: BudgetType) => {
-    console.log(budget)
     setCurrentBudget(budget)
     setIsUpdateModalOpen(true)
   }

@@ -1,5 +1,5 @@
-import { z } from 'zod';
-import { categorySchema } from '../category/schema';
+import { z } from 'zod'
+import { categorySchema } from '../category/schema'
 
 export const BudgetSchema = z.object({
     _id: z.string().optional(),
@@ -14,7 +14,7 @@ export const BudgetSchema = z.object({
     categoryName: z.string().optional(),
     categoryId: categorySchema.optional(),
     userId: z.string().nonempty("User ID is required"),
-});
+})
 
 export const BudgetListSchema = z.object({
     budgets: z.array(BudgetSchema)
