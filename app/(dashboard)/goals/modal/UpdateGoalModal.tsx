@@ -197,7 +197,7 @@ const UpdateGoalModal: React.FC<UpdateGoalModalProps> = ({
                 Close
               </Button>
               <Button type="submit" className="min-w-28">
-                Add
+                Update
               </Button>
             </div>
           </form>
