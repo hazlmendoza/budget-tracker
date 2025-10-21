@@ -1,16 +1,14 @@
-import { TransactionListType } from "@/app/api/transaction/schema"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { TransactionListType } from '@/app/api/transaction/schema'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   ArrowDownLeft,
   ArrowUpRight,
   TrendingDown,
   TrendingUp,
-} from "lucide-react"
-import { useMemo } from "react"
+} from 'lucide-react'
+import { useMemo } from 'react'
 
 const DashboardOverview = ({ transactions }: TransactionListType) => {
- 
-  
   const monthlyData = useMemo(() => {
     const now = new Date()
     const currentMonth = now.getMonth()
@@ -31,7 +29,7 @@ const DashboardOverview = ({ transactions }: TransactionListType) => {
           date.getMonth() === currentMonth &&
           date.getFullYear() === currentYear
         ) {
-          transaction.type === "Income"
+          transaction.type === 'Income'
             ? (income += amount)
             : (expenses += amount)
         }
@@ -40,7 +38,7 @@ const DashboardOverview = ({ transactions }: TransactionListType) => {
           date.getMonth() === currentMonth - 1 &&
           date.getFullYear() === currentYear
         ) {
-          transaction.type === "Income"
+          transaction.type === 'Income'
             ? (lastMonthIncome += amount)
             : (lastMonthExpenses += amount)
         }
@@ -77,62 +75,64 @@ const DashboardOverview = ({ transactions }: TransactionListType) => {
   }, [monthlyData])
 
   return (
-    <div className="grid grid-cols-2 gap-6">
-      <Card className="card-elevated animate-fade-in">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-          <CardTitle className="text-sm font-medium text-muted-foreground">
-            Monthly Income
-          </CardTitle>
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-muted">
-            <TrendingUp className="h-4 w-4 text-accent-foreground" />
-          </div>
-        </CardHeader>
-        <CardContent>
-          <div className="text-3xl font-bold text-foreground">
-            ${monthlyData.income.toFixed(2)}
-          </div>
-          <p
-            className={`text-xs font-medium flex items-center mt-2 
-                ${incomeChange >= 0 ? "text-success" : "text-destructive"}
+    <div className="overflow-x-auto">
+      <div className="flex flex-row gap-6 whitespace-nowrap">
+        <Card className="card-elevated animate-fade-in">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+            <CardTitle className="text-sm font-medium text-muted-foreground">
+              Monthly Income
+            </CardTitle>
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-muted">
+              <TrendingUp className="h-4 w-4 text-accent-foreground" />
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold text-foreground min-w-40">
+              ${monthlyData.income.toFixed(2)}
+            </div>
+            <p
+              className={`text-xs font-medium flex items-center mt-2 
+                ${incomeChange >= 0 ? 'text-success' : 'text-destructive'}
             `}
-          >
-            {incomeChange >= 0 ? (
-              <ArrowUpRight className="mr-1 h-3 w-3" />
-            ) : (
-              <ArrowDownLeft className="mr-1 h-3 w-3" />
-            )}
-            {incomeChange.toFixed(2)}% from last month
-          </p>
-        </CardContent>
-      </Card>
+            >
+              {incomeChange >= 0 ? (
+                <ArrowUpRight className="mr-1 h-3 w-3" />
+              ) : (
+                <ArrowDownLeft className="mr-1 h-3 w-3" />
+              )}
+              {incomeChange.toFixed(2)}% from last month
+            </p>
+          </CardContent>
+        </Card>
 
-      <Card className="card-elevated animate-fade-in">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-          <CardTitle className="text-sm font-medium text-muted-foreground">
-            Monthly Expenses
-          </CardTitle>
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-muted">
-            <TrendingDown className="h-4 w-4 text-accent-foreground" />
-          </div>
-        </CardHeader>
-        <CardContent>
-          <div className="text-3xl font-bold text-foreground">
-            ${monthlyData.expenses.toFixed(2)}
-          </div>
-          <p
-            className={`text-xs font-medium flex items-center mt-2 
-                ${expensesChange >= 0 ? "text-success" : "text-destructive"}
+        <Card className="card-elevated animate-fade-in">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+            <CardTitle className="text-sm font-medium text-muted-foreground">
+              Monthly Expenses
+            </CardTitle>
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-muted">
+              <TrendingDown className="h-4 w-4 text-accent-foreground" />
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold text-foreground min-w-40">
+              ${monthlyData.expenses.toFixed(2)}
+            </div>
+            <p
+              className={`text-xs font-medium flex items-center mt-2 
+                ${expensesChange >= 0 ? 'text-success' : 'text-destructive'}
             `}
-          >
-            {expensesChange >= 0 ? (
-              <ArrowUpRight className="mr-1 h-3 w-3" />
-            ) : (
-              <ArrowDownLeft className="mr-1 h-3 w-3" />
-            )}
-            {expensesChange.toFixed(2)}% from last month
-          </p>
-        </CardContent>
-      </Card>
+            >
+              {expensesChange >= 0 ? (
+                <ArrowUpRight className="mr-1 h-3 w-3" />
+              ) : (
+                <ArrowDownLeft className="mr-1 h-3 w-3" />
+              )}
+              {expensesChange.toFixed(2)}% from last month
+            </p>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   )
 }

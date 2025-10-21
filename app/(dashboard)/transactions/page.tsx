@@ -9,8 +9,6 @@ import { getAllTransactions } from "../../api/transaction"
 import AddTransactionModal from "./modal/AddTransactionModal"
 import { useAuth } from "@/app/context/AuthContext"
 
-
-
 export default function Transactions() {
   const { user } = useAuth()
   const [transactions, setTransactions] = useAtom(transactionsListAtom)
@@ -18,13 +16,9 @@ export default function Transactions() {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!user) {
-        console.error("User not found in local storage")
-        return
-      }
 
       try {
-        const fetchedTransactions = await getAllTransactions(user.id)
+        const fetchedTransactions = await getAllTransactions(user?.id || '')
         setTransactions(fetchedTransactions)
       } catch (error) {
         console.error("Error fetching transactions:", error)
@@ -33,14 +27,6 @@ export default function Transactions() {
 
     fetchData()
   }, [transactions, setTransactions, user])
-
-  const handleOpenModal = () => {
-    setIsModalOpen(true)
-  }
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false)
-  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -56,13 +42,13 @@ export default function Transactions() {
                 Manage and track all your financial transactions
               </p>
             </div>
-            <Button className="btn-primary" onClick={handleOpenModal}>
-              <Plus className="mr-2 h-4 w-4" />
-              Add Transaction
+            <Button className="m-2 btn-primary" onClick={() => setIsModalOpen(true)}>
+              <Plus className="md:mr-2 h-4 w-4" />
+              <span className="hidden md:inline">Add Transaction</span>
             </Button>
             <AddTransactionModal
               isOpen={isModalOpen}
-              onClose={handleCloseModal}
+              onClose={() => setIsModalOpen(false)}
             />
           </div>
         </div>

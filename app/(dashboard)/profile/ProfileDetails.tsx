@@ -9,7 +9,7 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({ isOpen, children, posit
   if (!isOpen) return null
   return (
     <div
-      className="w-96 bg-white text-black p-6 rounded shadow-lg"
+      className="w-80 bg-white text-black p-6 rounded shadow-lg"
       style={{
         position: "absolute",
         top: position.top,

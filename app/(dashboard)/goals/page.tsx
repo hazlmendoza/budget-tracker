@@ -17,13 +17,8 @@ export default function Goals() {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!user) {
-        console.error("User not found in local storage")
-        return
-      }
-
       try {
-        const goals = await getAllGoals(user.id)
+        const goals = await getAllGoals(user?.id || '')
         setGoals(goals)
       } catch (error) {
         console.error("Error fetching transactions:", error)
@@ -32,10 +27,6 @@ export default function Goals() {
 
     fetchData()
   }, [goals, setGoals, user])
-
-  const handleOpenModal = () => {
-    setIsModalOpen(true)
-  }
 
   const handleCloseModal = () => {
     setIsModalOpen(false)
@@ -53,9 +44,9 @@ export default function Goals() {
                 Set and track your savings goals
               </p>
             </div>
-            <Button className="btn-primary" onClick={handleOpenModal}>
-              <Plus className="mr-2 h-4 w-4" />
-              Add Goal
+            <Button className="m-2 btn-primary" onClick={() => setIsModalOpen(true)}>
+              <Plus className="md:mr-2 h-4 w-4" />
+              <span className="hidden md:inline">Add Goal</span>
             </Button>
             <AddGoalModal isOpen={isModalOpen} onClose={handleCloseModal} />
           </div>

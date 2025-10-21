@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormField,
@@ -6,35 +6,35 @@ import {
   FormLabel,
   FormControl,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import {
   transactionSchema,
   TransactionType,
-} from "@/app/api/transaction/schema"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
+} from "@/app/api/transaction/schema";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-import { addTransaction } from "@/app/api/transaction"
-import { useAuth } from "@/app/context/AuthContext"
-import { toast } from "sonner"
+} from "@/components/ui/select";
+import { addTransaction } from "@/app/api/transaction";
+import { useAuth } from "@/app/context/AuthContext";
+import { toast } from "sonner";
 
 interface AddTransactionModalProps {
-  isOpen: boolean
-  onClose: () => void
+  isOpen: boolean;
+  onClose: () => void;
 }
 
 const AddTransactionModal: React.FC<AddTransactionModalProps> = ({
   isOpen,
   onClose,
 }) => {
-  const { user } = useAuth()
+  const { user } = useAuth();
   const form = useForm<TransactionType>({
     resolver: zodResolver(transactionSchema),
     defaultValues: {
@@ -45,12 +45,12 @@ const AddTransactionModal: React.FC<AddTransactionModalProps> = ({
       categoryName: "",
       userId: user?.id || "",
     },
-  })
+  });
 
   const onSubmit = async (values: TransactionType) => {
     try {
       if (!user?.id) {
-        throw new Error("User ID is not available.")
+        throw new Error("User ID is not available.");
       }
       const formattedValues = {
         date: values.date ? new Date(values.date) : new Date(),
@@ -59,32 +59,31 @@ const AddTransactionModal: React.FC<AddTransactionModalProps> = ({
         description: values.description,
         userId: user.id,
         categoryName: values.categoryName,
-      }
+      };
 
-      await addTransaction(formattedValues)
+      await addTransaction(formattedValues);
       toast.success("Transaction Created!", {
         description: "Your transaction has been successfully added.",
-      })
-      onClose()
+      });
+      form.reset()
+      onClose();
     } catch (error) {
       toast.error("Transaction Failed!", {
         description: "Something went wrong while adding your transaction.",
-      })
-      console.log(error)
+      });
+      form.reset()
+      console.log(error);
     }
-  }
+  };
 
-  if (!isOpen) return null
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <div className="bg-background p-6 rounded-lg shadow-lg">
+      <div className="bg-background p-6 rounded-lg shadow-lg w-full max-w-md">
         <h1 className="text-lg font-bold mb-8">Add Transaction</h1>
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-8 min-w-[400px]"
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
               control={form.control}
               name="description"
@@ -92,18 +91,18 @@ const AddTransactionModal: React.FC<AddTransactionModalProps> = ({
                 <FormItem>
                   <FormLabel>Description*</FormLabel>
                   <FormControl>
-                    <Input placeholder="" type="description" {...field} />
+                    <Input placeholder="" type="text" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <div className="flex flex-row space-x-4">
+            <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
               <FormField
                 control={form.control}
                 name="type"
                 render={({ field }) => (
-                  <FormItem className="w-[50%]">
+                  <FormItem className="flex-1">
                     <FormLabel>Type*</FormLabel>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
@@ -124,7 +123,7 @@ const AddTransactionModal: React.FC<AddTransactionModalProps> = ({
                 control={form.control}
                 name="date"
                 render={({ field }) => (
-                  <FormItem className="w-[50%]">
+                  <FormItem className="flex-1">
                     <FormLabel>Date*</FormLabel>
                     <FormControl>
                       <Input
@@ -138,8 +137,8 @@ const AddTransactionModal: React.FC<AddTransactionModalProps> = ({
                             : ""
                         }
                         onChange={(e) => {
-                          const value = e.target.value
-                          field.onChange(value ? new Date(value) : undefined)
+                          const value = e.target.value;
+                          field.onChange(value ? new Date(value) : undefined);
                         }}
                         onBlur={field.onBlur}
                         name={field.name}
@@ -178,17 +177,17 @@ const AddTransactionModal: React.FC<AddTransactionModalProps> = ({
                 <FormItem>
                   <FormLabel>Category</FormLabel>
                   <FormControl>
-                    <Input placeholder="Category" type="category" {...field} />
+                    <Input placeholder="Category" type="text" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <div className="mt-8 flex justify-end">
-              <Button onClick={onClose} className="mr-4 min-w-28">
+            <div className="mt-8 flex justify-end space-x-4">
+              <Button onClick={onClose} className="min-w-[100px]">
                 Close
               </Button>
-              <Button type="submit" className="min-w-28">
+              <Button type="submit" className="min-w-[100px]">
                 Add
               </Button>
             </div>
@@ -196,7 +195,7 @@ const AddTransactionModal: React.FC<AddTransactionModalProps> = ({
         </Form>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default AddTransactionModal
+export default AddTransactionModal;

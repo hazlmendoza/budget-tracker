@@ -1,16 +1,16 @@
-"use client"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { ArrowDownLeft, ArrowUpRight, Edit, Trash2 } from "lucide-react"
-import { useState } from "react"
-import UpdateTransactionModal from "./modal/UpdateTransactionModal"
+'use client'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { ArrowDownLeft, ArrowUpRight, Trash2 } from 'lucide-react'
+import { useState } from 'react'
+import UpdateTransactionModal from './modal/UpdateTransactionModal'
 import {
   TransactionListType,
   TransactionType,
-} from "@/app/api/transaction/schema"
-import DeleteTransactionModal from "./modal/DeleteTransactionModal"
-import { format } from "date-fns"
+} from '@/app/api/transaction/schema'
+import DeleteTransactionModal from './modal/DeleteTransactionModal'
+import { format } from 'date-fns'
 
 const TransactionList = ({ transactions }: TransactionListType) => {
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false)
@@ -39,28 +39,29 @@ const TransactionList = ({ transactions }: TransactionListType) => {
   }
 
   return (
-    <Card className="card-elevated">
+    <Card>
       <CardHeader>
         <CardTitle className="text-lg font-semibold">
           Transaction History ({transactions.length})
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="space-y-3">
+        <div>
           {transactions.map((transaction) => (
             <div
               key={transaction._id}
-              className="flex items-center justify-between p-4 rounded-lg bg-surface-2 hover:bg-surface-3 transition-colors duration-200"
+              className="flex items-center my-2 justify-between rounded-lg cursor-pointer"
+              onClick={() => handleOpenUpdateModal(transaction)}
             >
               <div className="flex items-center space-x-4">
                 <div
                   className={`flex h-12 w-12 items-center justify-center rounded-lg bg-muted ${
-                    transaction.categoryId?.type === "Income"
-                      ? "bg-success-light"
-                      : "bg-muted"
+                    transaction.categoryId?.type === 'Income'
+                      ? 'bg-success-light'
+                      : 'bg-muted'
                   }`}
                 >
-                  {transaction.categoryId?.type === "Income" ? (
+                  {transaction.categoryId?.type === 'Income' ? (
                     <ArrowUpRight className="h-5 w-5 text-success" />
                   ) : (
                     <ArrowDownLeft className="h-5 w-5 text-muted-foreground" />
@@ -76,46 +77,36 @@ const TransactionList = ({ transactions }: TransactionListType) => {
                     </Badge>
                     <span className="text-sm text-muted-foreground">
                       {transaction.date
-                        ? format(transaction.date, "yyyy-MM-dd")
-                        : "No date available"}
+                        ? format(transaction.date, 'yyyy-MM-dd')
+                        : 'No date available'}
                     </span>
                   </div>
                 </div>
               </div>
 
-              <div className="flex items-center space-x-4">
-                <div className="text-right">
-                  <p
-                    className={`text-lg font-bold ${
-                      transaction.categoryId?.type === "Income"
-                        ? "text-success"
-                        : "text-foreground"
-                    }`}
-                  >
-                    {transaction.categoryId?.type === "Income" ? "+" : "-"}$
-                    {Math.abs(transaction.amount).toFixed(2)}
-                  </p>
-                </div>
+              <div className="flex items-end space-x-4">
+                <p
+                  className={`text-lg font-bold hidden md:block ${
+                    transaction.categoryId?.type === 'Income'
+                      ? 'text-success'
+                      : 'text-foreground'
+                  }`}
+                >
+                  {transaction.categoryId?.type === 'Income' ? '+' : '-'}$
+                  {Math.abs(transaction.amount).toFixed(2)}
+                </p>
 
-                <div className="flex items-center space-x-2">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => handleOpenUpdateModal(transaction)}
-                    className="h-8 w-8 p-0"
-                  >
-                    <Edit className="h-4 w-4" />
-                  </Button>
-
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => handleOpenDeleteModal(transaction)}
-                    className="h-8 w-8 p-0 text-destructive hover:text-destructive"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    handleOpenDeleteModal(transaction)
+                  }}
+                  className="h-8 w-8 p-0 text-destructive hover:text-destructive"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
               </div>
             </div>
           ))}

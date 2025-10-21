@@ -20,13 +20,8 @@ export default function Dashboard() {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!user) {
-        console.error("User not found in local storage")
-        return
-      }
-
       try {
-        const fetchedTransactions = await getAllTransactions(user.id)
+        const fetchedTransactions = await getAllTransactions(user?.id || '')
         setTransactions(fetchedTransactions)
       } catch (error) {
         console.error("Error fetching transactions:", error)
@@ -35,10 +30,6 @@ export default function Dashboard() {
 
     fetchData()
   }, [transactions, setTransactions, user])
-
-  const handleOpenModal = () => {
-    setIsModalOpen(true)
-  }
 
   const handleCloseModal = () => {
     setIsModalOpen(false)
@@ -53,9 +44,9 @@ export default function Dashboard() {
             <div>
               <h1 className="text-3xl font-bold text-foreground">Dashboard</h1>
             </div>
-            <Button className="btn-primary" onClick={handleOpenModal}>
-              <Plus className="mr-2 h-4 w-4" />
-              Add Transaction
+            <Button className="m-2 btn-primary" onClick={() => setIsModalOpen(true)}>
+              <Plus className="md:mr-2 h-4 w-4" />
+              <span className="hidden md:inline">Add Transaction</span>
             </Button>
             <AddTransactionModal
               isOpen={isModalOpen}

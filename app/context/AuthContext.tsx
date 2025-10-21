@@ -4,10 +4,10 @@ import React, {
   useEffect,
   ReactNode,
   useContext,
-} from "react"
-import axios from "axios"
-import LoadingOverlay from "../layout/LoadingOverlay"
-import { toast } from "sonner"
+} from 'react'
+import axios from 'axios'
+import LoadingOverlay from '../layout/LoadingOverlay'
+import { toast } from 'sonner'
 
 interface User {
   id: string
@@ -28,9 +28,7 @@ interface AuthContextProps {
   logout: () => Promise<void>
 }
 
-export const AuthContext = createContext<AuthContextProps | undefined>(
-  undefined
-)
+export const AuthContext = createContext<AuthContextProps | undefined>(undefined)
 
 interface AuthProviderProps {
   children: ReactNode
@@ -41,15 +39,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [loading, setLoading] = useState<boolean>(true)
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user")
+    const storedUser = localStorage.getItem('user')
 
     if (storedUser) {
       try {
         const parsedUser = JSON.parse(storedUser)
         setUser(parsedUser)
       } catch (error) {
-        console.error("Failed to parse user data:", error)
-        localStorage.removeItem("user")
+        console.error('Failed to parse user data:', error)
+        localStorage.removeItem('user')
       }
     }
     setLoading(false)
@@ -60,13 +58,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
-        credentials
+        credentials,
       )
       const userData = response.data
       const { _id, username, email, sessionToken } = userData
       const userToStore = { id: _id, username, email, sessionToken }
       setUser(userToStore)
-      localStorage.setItem("user", JSON.stringify(userToStore))
+      localStorage.setItem('user', JSON.stringify(userToStore))
     } catch (error) {
       console.error(error)
       throw error
@@ -84,21 +82,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/auth/register`,
-        userData
+        userData,
       )
       const userResponse = response.data
       const { _id, username, email, sessionToken } = userResponse
       const userToStore = { id: _id, username, email, sessionToken }
       setUser(userToStore)
-      localStorage.setItem("user", JSON.stringify(userToStore))
-      toast.success("User Created!", {
-        description: "New user has been successfully added.",
+      localStorage.setItem('user', JSON.stringify(userToStore))
+      toast.success('User Created!', {
+        description: 'New user has been successfully added.',
       })
     } catch (error) {
-      toast.error("User Creation Failed!", {
-        description: "Something went wrong while adding a new user.",
+      toast.error('User Creation Failed!', {
+        description: 'Something went wrong while adding a new user.',
       })
-      console.error("Signup failed:", error)
+      console.error('Signup failed:', error)
       throw error
     } finally {
       setLoading(false)
@@ -108,8 +106,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const logout = async () => {
     await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/logout`)
     setUser(null)
-    localStorage.removeItem("user")
+    localStorage.removeItem('user')
   }
+
+  if (loading) return <LoadingOverlay />
 
   return (
     <>
@@ -124,7 +124,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 export const useAuth = () => {
   const context = useContext(AuthContext)
   if (!context) {
-    throw new Error("useAuth must be used within an AuthProvider")
+    throw new Error('useAuth must be used within an AuthProvider')
   }
   return context
 }

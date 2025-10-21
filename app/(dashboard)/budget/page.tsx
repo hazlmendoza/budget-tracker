@@ -18,13 +18,8 @@ export default function Budget() {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!user) {
-        console.error("User not found in local storage")
-        return
-      }
-
       try {
-        const budgets = await getAllBudgets(user.id)
+        const budgets = await getAllBudgets(user?.id || '')
         setBudgets(budgets)
       } catch (error) {
         console.error("Error fetching transactions:", error)
@@ -34,13 +29,7 @@ export default function Budget() {
     fetchData()
   }, [budgets, setBudgets, user])
 
-  const handleOpenModal = () => {
-    setIsModalOpen(true)
-  }
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false)
-  }
+  
 
   return (
     <div className="min-h-screen bg-background">
@@ -54,11 +43,11 @@ export default function Budget() {
                 Track your spending against your budget goals
               </p>
             </div>
-            <Button className="btn-primary" onClick={handleOpenModal}>
-              <Plus className="mr-2 h-4 w-4" />
-              Add Budget
+             <Button className="m-2 btn-primary" onClick={() => setIsModalOpen(true)}>
+              <Plus className="md:mr-2 h-4 w-4" />
+              <span className="hidden md:inline">Add Budget</span>
             </Button>
-            <AddBudgetModal isOpen={isModalOpen} onClose={handleCloseModal} />
+            <AddBudgetModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
           </div>
         </div>
       </div>

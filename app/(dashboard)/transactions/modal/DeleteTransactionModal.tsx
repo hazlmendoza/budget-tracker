@@ -1,8 +1,8 @@
-import { Button } from "@/components/ui/button"
-import { TransactionType } from "@/app/api/transaction/schema"
-import { deleteTransaction } from "@/app/api/transaction"
-import { useAuth } from "@/app/context/AuthContext"
-import { toast } from "sonner"
+import { Button } from '@/components/ui/button'
+import { TransactionType } from '@/app/api/transaction/schema'
+import { deleteTransaction } from '@/app/api/transaction'
+import { useAuth } from '@/app/context/AuthContext'
+import { toast } from 'sonner'
 
 interface DeleteTransactionModalProps {
   isOpen: boolean
@@ -20,20 +20,20 @@ const DeleteTransactionModal: React.FC<DeleteTransactionModalProps> = ({
   const handleDelete = async () => {
     try {
       if (!user?.id) {
-        throw new Error("User ID is not available.")
+        throw new Error('User ID is not available.')
       }
       if (!transaction._id) {
-        throw new Error("Transaction ID is not available.")
+        throw new Error('Transaction ID is not available.')
       }
 
       await deleteTransaction(transaction._id)
-      toast.success("Transaction Deleted!", {
-        description: "Your transaction has been successfully deleted.",
+      toast.success('Transaction Deleted!', {
+        description: 'Your transaction has been successfully deleted.',
       })
       onClose()
     } catch (error) {
-      toast.error("Transaction Failed!", {
-        description: "Something went wrong while deleting your transaction.",
+      toast.error('Transaction Failed!', {
+        description: 'Something went wrong while deleting your transaction.',
       })
       console.log(error)
     }
@@ -43,7 +43,7 @@ const DeleteTransactionModal: React.FC<DeleteTransactionModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <div className="bg-background p-6 rounded-lg shadow-lg">
+      <div className="bg-background p-6 rounded-lg shadow-lg w-full max-w-md">
         <h1 className="text-lg font-bold mb-8">Confirm Deletion</h1>
         <p className="mb-4 text-gray-700">
           Are you sure you want to delete this transaction? This action cannot

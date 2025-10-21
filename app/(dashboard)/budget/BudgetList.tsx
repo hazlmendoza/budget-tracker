@@ -1,18 +1,17 @@
-import { BudgetListType, BudgetType } from "@/app/api/budget/schema"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { BudgetListType, BudgetType } from '@/app/api/budget/schema'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   AlertTriangle,
   Calendar,
   CircleCheckBig,
-  Edit,
   Trash2,
-} from "lucide-react"
-import React, { useState } from "react"
-import { format } from "date-fns"
-import { Progress } from "@/components/ui/progress"
-import UpdateBudgetModal from "./modal/UpdateBudgetModal"
-import DeleteBudgetModal from "./modal/DeleteBudgetModal"
+} from 'lucide-react'
+import React, { useState } from 'react'
+import { format } from 'date-fns'
+import { Progress } from '@/components/ui/progress'
+import UpdateBudgetModal from './modal/UpdateBudgetModal'
+import DeleteBudgetModal from './modal/DeleteBudgetModal'
 
 const BudgetList = ({ budgets }: BudgetListType) => {
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false)
@@ -56,7 +55,13 @@ const BudgetList = ({ budgets }: BudgetListType) => {
             const isOverBudget = spent > budgeted
 
             return (
-              <div key={budget._id} className="space-y-3">
+              <div
+                key={budget._id}
+                className="space-y-3 cursor-pointer"
+                onClick={() => {
+                  handleOpenUpdateModal(budget)
+                }}
+              >
                 <div className="flex items-center justify-between">
                   <div className="space-y-1">
                     <div className="flex items-center">
@@ -74,28 +79,22 @@ const BudgetList = ({ budgets }: BudgetListType) => {
                     <div className="flex items-center space-x-4 text-sm text-muted-foreground">
                       <div className="flex items-center">
                         <Calendar className="mr-1 h-3 w-3" />
-                        {format(budget.endDate, "yyyy-MM-dd")}
+                        {format(budget.endDate, 'yyyy-MM-dd')}
                       </div>
                     </div>
                   </div>
-                  <div>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="h-8 w-8 p-0"
-                      onClick={() => handleOpenUpdateModal(budget)}
-                    >
-                      <Edit className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="h-8 w-8 p-0"
-                      onClick={() => handleOpenDeleteModal(budget)}
-                    >
-                      <Trash2 className="h-4 w-4 text-destructive" />
-                    </Button>
-                  </div>
+
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-8 w-8 p-0"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      handleOpenDeleteModal(budget)
+                    }}
+                  >
+                    <Trash2 className="h-4 w-4 text-destructive" />
+                  </Button>
                 </div>
 
                 <div className="space-y-2">
@@ -106,8 +105,8 @@ const BudgetList = ({ budgets }: BudgetListType) => {
                     <span
                       className={
                         isOverBudget
-                          ? "text-destructive font-medium"
-                          : "text-muted-foreground"
+                          ? 'text-destructive font-medium'
+                          : 'text-muted-foreground'
                       }
                     >
                       {((spent / budgeted) * 100).toFixed(1)}%

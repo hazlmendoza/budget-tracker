@@ -25,8 +25,8 @@ const ProfileLetter = () => {
       if (letterRef.current) {
         const rect = letterRef.current.getBoundingClientRect()
         setModalPosition({
-          top: rect.bottom + 5 + window.scrollY,
-          left: rect.right - 200 + window.scrollX,
+          top: rect.bottom + 10 + window.scrollY,
+          left: rect.right - 160 + window.scrollX,
         })
       }
       setIsModalOpen(true)
