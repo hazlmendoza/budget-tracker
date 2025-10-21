@@ -1,4 +1,5 @@
-import { TransactionListType } from "@/app/api/transaction/schema"
+'use client'
+import { TransactionListType } from '@/app/api/transaction/schema'
 import {
   BarChart,
   Bar,
@@ -7,13 +8,22 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-} from "recharts"
-import { useMemo } from "react"
-import EmptyData from "./EmptyData"
-
+} from 'recharts'
+import { useEffect, useMemo, useState } from 'react'
+import EmptyData from './EmptyData'
 
 export const IncomeExpenseChart = ({ transactions }: TransactionListType) => {
   const isLoading = !transactions || transactions.length === 0
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(max-width: 768px)')
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const handleMediaChange = (e: any) => setIsMobile(e.matches)
+    setIsMobile(mediaQuery.matches)
+    mediaQuery.addEventListener('change', handleMediaChange)
+    return () => mediaQuery.removeEventListener('change', handleMediaChange)
+  }, [])
 
   // Calculate the last 6 months
   const getLastSixMonths = () => {
@@ -21,7 +31,7 @@ export const IncomeExpenseChart = ({ transactions }: TransactionListType) => {
     const months = []
     for (let i = 5; i >= 0; i--) {
       const month = new Date(now.getFullYear(), now.getMonth() - i)
-      months.push(month.toLocaleString("default", { month: "long" })) // Get month name
+      months.push(month.toLocaleString('default', { month: 'long' })) 
     }
     return months
   }
@@ -41,15 +51,15 @@ export const IncomeExpenseChart = ({ transactions }: TransactionListType) => {
         ? new Date(transaction.date)
         : null
       if (transactionDate) {
-        const transactionMonth = transactionDate.toLocaleString("default", {
-          month: "long",
+        const transactionMonth = transactionDate.toLocaleString('default', {
+          month: 'long',
         })
 
         const monthIndex = months.indexOf(transactionMonth)
         if (monthIndex !== -1) {
-          if (transaction.type === "Income") {
+          if (transaction.type === 'Income') {
             result[monthIndex].income += transaction.amount
-          } else if (transaction.type === "Expense") {
+          } else if (transaction.type === 'Expense') {
             result[monthIndex].expenses += transaction.amount
           }
         }
@@ -60,7 +70,7 @@ export const IncomeExpenseChart = ({ transactions }: TransactionListType) => {
   }, [transactions, months, isLoading])
 
   return (
-    <div style={{ height: "400px", width: "100%" }}>
+    <div className='h-96 w-full'>
       <ResponsiveContainer width="100%" height="100%">
         {data.length > 0 ? (
           <BarChart
@@ -80,6 +90,9 @@ export const IncomeExpenseChart = ({ transactions }: TransactionListType) => {
               axisLine={false}
               tickFormatter={(month) => month}
               interval={0}
+              angle={isMobile ? -45 : 0}
+              textAnchor={isMobile ? 'end' : 'middle'}
+              height={50}
             />
             <YAxis
               stroke="var(--muted-foreground)"
@@ -91,13 +104,13 @@ export const IncomeExpenseChart = ({ transactions }: TransactionListType) => {
             <Tooltip
               formatter={(value: number, name: string) => [
                 `$${value.toLocaleString()}`,
-                name === "Expenses" ? "Expenses" : "Income",
+                name === 'Expenses' ? 'Expenses' : 'Income',
               ]}
               contentStyle={{
-                backgroundColor: "var(--card)",
-                border: "1px solid var(--border)",
-                borderRadius: "8px",
-                color: "var(--card-foreground)",
+                backgroundColor: 'var(--card)',
+                border: '1px solid var(--border)',
+                borderRadius: '8px',
+                color: 'var(--card-foreground)',
               }}
             />
             <Bar
@@ -117,7 +130,7 @@ export const IncomeExpenseChart = ({ transactions }: TransactionListType) => {
           </BarChart>
         ) : (
           <div className="flex flex-col items-center justify-center h-full text-center">
-            <EmptyData description={"Start adding transactions!"} />
+            <EmptyData description={'Start adding transactions!'} />
           </div>
         )}
       </ResponsiveContainer>
